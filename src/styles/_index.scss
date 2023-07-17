@@ -34,12 +34,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: grey;
+  color: $lightLavender;
+  background-color: $darkBlue;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s;
 
   &:hover {
-    border-color: $primary-blue;
+    background-color: $lightLavender;
+    color: $darkBlue;
   }
 
   &:focus,

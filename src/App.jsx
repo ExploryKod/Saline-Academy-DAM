@@ -4,7 +4,6 @@ import viteLogo from '/vite.svg'
 import TestApi from './component/testApi'
 import './styles/style.scss'
 import ProjectCard from './component/ProjectCard'
-import './styles/main.scss'
 
 function App() {
   const [count, setCount] = useState(0)
