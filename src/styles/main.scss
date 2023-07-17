@@ -1,0 +1,19 @@
+
+/* Class transversales - Bases */
+@import 'bases/variables';
+@import 'bases/reset';
+@import 'bases/responsive';
+
+/* Style for some utilities */
+@import 'utilities/alert';
+
+/* Style for components */
+@import 'components/buttons';
+
+/* Style for routes (pages) */
+@import 'routes/404';
+
+/* TODO: styles pour l'exemple à supprimer */
+@import './index';
+@import './app';
+
