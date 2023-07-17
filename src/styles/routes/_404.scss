@@ -9,7 +9,7 @@
     .not-found__sub-container {
         position: relative;
         background-color: rgba(27, 52, 29, 1);
-        width: 50%;
+        width: 75%;
         min-height: 40vh;
         border-radius: 20px;
         display: flex;
@@ -17,11 +17,16 @@
         align-items: center;
         justify-content: start;
 
+        @include media-breakpoint-down(xl) {
+            width: 100%;
+
+        }
+
         img {
             position: absolute;
             border-radius: 20px;
-            clip-path: circle(200px at center);
-            z-index: 1;
+            clip-path: circle(300px at center);
+            z-index: 2;
             top: 70%;
             left: 50%;
             right: 50%;
