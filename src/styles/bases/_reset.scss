@@ -1,21 +1,21 @@
 * {
     box-sizing: border-box;
   }
+
+html {
+    scroll-behavior: smooth;
+    overflow-x:hidden;
+  }
   
-  body {
+body {
     margin: 0;
-    padding: 20px 40px;
-    font-family: 'Orkney', sans-serif;
+    font-family: $NotoSans;
+    overflow-x:hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
-  }
-  
-  a {
+
+a {
     text-decoration: none;
     color: black;
   }
@@ -23,8 +23,4 @@
 li {
     list-style: none;
   }
-
-  .wrapper-front,.layout-front-wrapper{
-    height:calc(100% - 47px);
-}
 

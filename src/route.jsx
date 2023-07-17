@@ -1,3 +1,7 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import Connexion from "./routes/connexion";
+import NotFoundPage from './routes/404';
+import App from "./App";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import App from "./App"
 import AddRushPage from './component/AddRushPage';
