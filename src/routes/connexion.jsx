@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import salineLogoLight from '../assets/saline_logo/logo_light.svg';
 
 const Connexion = () => {
   const [toggle, setToggle] = useState(true);
   const [formData, setFormData] = useState({password: "", username: ""})
   const [registerData, setRegisterData] = useState({username: "", firstname:"", lastname: "", email:"", password:"", phone:""})
   const [flashMessage, setFlashMessage] = useState('');
+  const [sessionStatus, setSessionStatus] = useState({});
 
   const handleToggle = () => {
     setToggle(!toggle);
@@ -93,63 +95,65 @@ const Connexion = () => {
 }
 
   return (
-    <main className="page-connexion">
-      <div className="outer-connexion">
-        <div className="inner-connexion">
-        {flashMessage && <div className="output-message x-center-position">{flashMessage}</div>}
-          {toggle ? (
-            <div className="container-inscription">
-              <form className="form-container" onSubmit={handleRegisterSubmit} method="post">
-                <div className="form-elem">
-                  <input type="text" name="username" id="username" placeholder="Votre prénom" onChange={handleRegisterChange} required  />
-                </div>
-                <div className="form-elem">
-                  <input type="text" name="lastname" id="lastname" placeholder="Votre nom" onChange={handleRegisterChange} required  />
-                </div>
-                <div className="form-elem">
-                  <input type="text" name="email" id="email" placeholder="Votre email" onChange={handleRegisterChange} required  />
-                </div>
-                <div className="form-elem">
-                  <input type="password" name="password" id="password" placeholder="mot de passe" onChange={handleRegisterChange} required />
-                </div>
-                <div className="form-elem">
-                  <input type="number" name="phone" id="phone" placeholder="téléphone" onChange={handleRegisterChange}  />
-                </div>
-                <div className="form-elem">
-                  <button className="btn-1" type="submit">Créer son compte</button>
-                </div>
-                <div className="form-elem">
-                  <p>Déjà Inscris ?
-                   <span className="to-connexion-link" onClick={handleToggle}> Se connecter</span></p>
-                </div>
-              </form>
+      <main className="page-connexion">
+        {!sessionStatus.session ? (
+            <div className="outer-connexion">
+              <div className="inner-connexion">
+                {flashMessage && <div className="output-message x-center-position">{flashMessage}</div>}
+                {toggle ? (
+                    <div className="container-inscription">
+                      <div className="img-container">
+                        <img src={salineLogoLight} alt="logo" />
+                      </div>
+                      <form className="form-container" onSubmit={handleRegisterSubmit} method="post">
+                        <div className="form-elem">
+                          <label htmlFor="email"></label>
+                          <input type="text" name="email" id="email" placeholder="Votre pseudo" onChange={handleRegisterChange} required  />
+                        </div>
+                        <div className="form-elem">
+                          <label htmlFor="password"></label>
+                          <input type="password" name="password" id="password" placeholder="Choisir un mot de passe" onChange={handleRegisterChange} required />
+                        </div>
+
+                        <div className="form-elem">
+                          <button className="btn-1" type="submit">Créer son compte</button>
+                        </div>
+                        <div className="form-elem">
+                          <p> Déjà inscris ?
+                            <span className="to-connexion-link" onClick={handleToggle}> Se connecter</span></p>
+                        </div>
+                      </form>
+                    </div>
+                ) : (
+                    <div className="container-connexion">
+                      <div className="img-container">
+                        <img src={salineLogoLight} alt="logo" />
+                      </div>
+                      <div className="form-container">
+                        <form id="login-form" method="post" onSubmit={handleLoginSubmit}>
+                          <div className="form-elem">
+                            <label htmlFor="username" className="connexion__username"></label>
+                            <input type="text" name="username" id="username" placeholder="Votre pseudo" onChange={handleChange} required />
+                          </div>
+                          <div className="form-elem">
+                            <input type="password" name="password" id="password" placeholder="Mot de passe" onChange={handleChange} required />
+                          </div>
+                          <div className="form-elem">
+                            <button type="submit" className="btn-1">Se connecter</button>
+                          </div>
+                          <div className="form-elem">
+                            <p>
+                              <span className="to-connexion-link" onClick={handleToggle}>Créer son compte</span>
+                            </p>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                )}
+              </div>
             </div>
-          ) : (
-            <div className="container-connexion">
-              <div className="img-container">
-                <img src="http://localhost:5000/assets/boiler-logo-2.svg" alt="logo" />
-              </div>
-              <div className="info-container">
-                <div></div>
-              </div>
-              <div className="form-container">
-                <form id="login-form" method="post" onSubmit={handleLoginSubmit}>
-                  <div className="form-elem">
-                    <input type="text" name="username" id="username" placeholder="username" onChange={handleChange} required />
-                  </div>
-                  <div className="form-elem">
-                    <input type="password" name="password" id="password" placeholder="Mot de passe" onChange={handleChange} required />
-                  </div>
-                  <div className="form-elem">
-                    <button type="submit" className="btn-1">Se connecter</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </main>
+        ): (<div className="no-session">Vous êtes déjà connecté</div>)}
+      </main>
   );
 };
 
