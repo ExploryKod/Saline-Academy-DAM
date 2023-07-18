@@ -1,0 +1,83 @@
+.project-detail-background {
+    max-width: 956px;
+    padding-right: 24px;
+}
+
+.project-detail-title {
+    background-color: lightgray;
+    color: black;
+}
+
+.tab-menu {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.edit-button {
+    padding: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.project-detail-instrument {
+    color: darkgray;
+}
+
+.project-detail-section {
+    background-color: white;
+}
+
+.project-detail-section2-content {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.project-detail-section1-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.instrument {
+    color: black;
+}
+
+.project-detail-description-section {
+    display: flex;
+    align-items: center;    margin-top: 32px;
+    margin-bottom: 64px;
+}
+
+.editIcon {
+    width: 32px;
+    height: 32px;
+}
+
+.trophyIcon {
+    margin-right: 16px;
+}
+
+.division {
+    min-height: 10px;
+    width: 936px;
+    max-width: 936px;
+    background-color: lightgray;
+    border-radius: 3px;
+    margin-bottom: 64px;
+}
+
+.project-detail-title2 {
+    margin-bottom: 72px;
+}
+
+.project-detail-footer {
+    margin-top: 80px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+body {
+    min-height: 0;
+}
