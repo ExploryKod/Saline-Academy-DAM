@@ -1,108 +1,88 @@
 import React, {useEffect, useState} from 'react';
 import salineLogoLight from '../assets/saline_logo/logo_light.svg';
 import SupabaseService from "../tools/SupabaseClient";
+import supabase from "../APIconfig/config.jsx";
 
 const Connexion = () => {
   const [toggle, setToggle] = useState(true);
   const [auth, setAuth] = useState([]);
-  // const [formData, setFormData] = useState({password: "", username: ""})
-  // const [registerData, setRegisterData] = useState({username: "", firstname:"", lastname: "", email:"", password:"", phone:""})
   const [flashMessage, setFlashMessage] = useState('');
   const [sessionStatus, setSessionStatus] = useState({});
+
+  const [registerData, setRegisterData] = useState({
+    firstname: '',
+    lastname: '',
+    password: '',
+    langue: '',
+    role: '',
+    phone: '',
+    email: '',
+  });
+
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
 
-  useEffect(() => {
-    const sbs = new SupabaseService();
-
-    sbs.getTest().then((p) => {
-      setAuth(p.data);
-    });
-  }, []);
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-  
-    // try {
-    //   const response = await fetch('http://localhost:5000/auth/register', {
-    //     method: 'POST',
-    //     body: new URLSearchParams({
-    //       ...registerData
-    //     })
-    //   });
+    try {
+      const { data, error } = await supabase
+          .from('users')
+          .insert([registerData]);
 
-    //   if (response.ok) {
-    //     console.log('réponse register bien reçu');
-    //     const data = await response.json();
-    //     console.log(data)
-    //     setFlashMessage(data.message);
-
-    //   } else {
-    //     console.log('échec de la réponse register');
-    //   }
-
-    // } catch(error) {
-    //   console.error('log failed:', error);
-    //   setFlashMessage('Il y a eu une erreur dans la requête');
-    //   setTimeout(() => {
-    //     setFlashMessage('');
-    //   }, 3000);
-    // }
+      if (error) {
+        setFlashMessage('Registration failed. Please try again.');
+      } else {
+        setFlashMessage('Registration successful!');
+        // You can perform additional actions after successful registration if needed.
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
   };
-
-
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-  
-    // try {
-    //   const response = await fetch('http://localhost:5000/auth/logged', {
-    //     method: 'POST',
-    //     body: new URLSearchParams({
-    //       ...formData
-    //     })
-    //   });
-      
-    //   if (response.ok) {
-    //     // Handle successful upload
-    //     console.log('réponse bien reçu');
-    //     const data = await response.json();
-    //     console.log(data)
-    //     setFlashMessage(data.message);
-
-    //   } else {
-    //     console.log('échec de la réponse');
-    //   }
-    // } catch (error) {
-    //   console.error('log failed:', error);
-    //   setFlashMessage('Il y a eu une erreur dans la requête');
-    //   setTimeout(() => {
-    //     setFlashMessage('');
-    //   }, 3000);
-    // }
+    try {
+      const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .match({ email: loginData.email, password: loginData.password });
+      if (error) {
+        setFlashMessage('Login failed. Please check your credentials.');
+      } else {
+        if (data.length > 0) {
+          setFlashMessage('Login successful!');
+          // You can perform additional actions after successful login if needed.
+        } else {
+          setFlashMessage('Login failed. Please check your credentials.');
+        }
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   const handleRegisterChange = (e) => {
-    // setRegisterData(prevState => {
-    //     return {
-    //         ...prevState,
-           
-    //         [e.target.name]: e.target.value
-    //     }
-    // }) 
-}
+    const { name, value } = e.target;
+    setRegisterData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const handleChange = (e) => {
-    // setFormData(prevState => {
-    //     return {
-    //         ...prevState,
-           
-    //         [e.target.name]: e.target.value
-    //     }
-    // }) 
-}
+    const { name, value } = e.target;
+    setLoginData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // useEffect(() => {
+  //   const session = supabase.auth.session();
+  //   setSessionStatus({ session });
+  // }, []);
 
   return (
       <main className="page-connexion">
@@ -118,12 +98,22 @@ const Connexion = () => {
                       <form className="form-container" onSubmit={handleRegisterSubmit} method="post">
                         <div className="form-elem">
                           <label htmlFor="email"></label>
-                          <input type="text" name="email" id="email" placeholder="Votre pseudo" onChange={handleRegisterChange} required  />
+                          <input type="email" name="email" id="email" placeholder="arnaud@ymail.com" onChange={handleRegisterChange} required  />
                         </div>
+                        <div className="form-elem">
+                          <div className="form-elem__inner">
+                            <label htmlFor="firstname"></label>
+                            <input type="text" name="firstname" id="firstname" placeholder="Prénom" onChange={handleRegisterChange} required />
+                            <label htmlFor="lastname"></label>
+                            <input type="text" name="lastname" id="lastname" placeholder="Nom" onChange={handleRegisterChange} required />
+                          </div>
+                        </div>
+
                         <div className="form-elem">
                           <label htmlFor="password"></label>
                           <input type="password" name="password" id="password" placeholder="Choisir un mot de passe" onChange={handleRegisterChange} required />
                         </div>
+
 
                         <div className="form-elem">
                           <button className="btn-1" type="submit">Créer son compte</button>
@@ -142,8 +132,8 @@ const Connexion = () => {
                       <div className="form-container">
                         <form id="login-form" method="post" onSubmit={handleLoginSubmit}>
                           <div className="form-elem">
-                            <label htmlFor="username" className="connexion__username"></label>
-                            <input type="text" name="username" id="username" placeholder="Votre pseudo" onChange={handleChange} required />
+                            <label htmlFor="email" className="connexion__username"></label>
+                            <input type="email" name="email" id="email" placeholder="arnaud@ymail.com" onChange={handleChange} required />
                           </div>
                           <div className="form-elem">
                             <input type="password" name="password" id="password" placeholder="Mot de passe" onChange={handleChange} required />

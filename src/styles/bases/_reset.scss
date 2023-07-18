@@ -1,10 +1,11 @@
 * {
     box-sizing: border-box;
-  }
+}
 
 html, body {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
   vertical-align: baseline;
+  overflow-y: hidden;
 }
   
 body {

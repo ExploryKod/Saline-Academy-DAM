@@ -1,11 +1,9 @@
-html, body {
-  font-family: $NotoSans;
+.page-connexion{
   @include media-breakpoint-down(xl) {
     height: 100vh;
     overflow-y: hidden;
   }
-}
-.page-connexion{
+
 
   .outer-connexion{
     position:absolute;
@@ -37,7 +35,7 @@ html, body {
       left:20%;
       transform: translate(-20%,-20%);
       width:500px;
-      height:600px;
+      min-height:600px;
       border-radius:25px;
       box-shadow: 0 11px 34px 0 rgb(0 0 0 / 20%);
       padding: 10px;
@@ -83,6 +81,24 @@ html, body {
             flex-direction: column;
             align-items: center;
             margin:20px 0;
+
+            .form-elem__inner {
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              gap: 5px;
+
+              label {
+                display: none;
+              }
+
+              input {
+                width: 50%;
+                max-width: 150px;
+              }
+            }
 
             label {
               width: 100%;
@@ -130,14 +146,13 @@ html, body {
               position: relative;
               border: 0;
               width: 300px;
-              height: 60px;
+              height: 40px;
               border-radius: 6px;
               font-size: 17px;
               line-height: 1.29412;
               color: $darkBlue;
               font-weight: 600;
               letter-spacing: -.021em;
-              width: 70%;
               padding-left: 10px;
               background-color: $lightLavender;
 
