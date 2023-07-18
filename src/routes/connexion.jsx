@@ -1,21 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import salineLogoLight from '../assets/saline_logo/logo_light.svg';
 import SupabaseService from "../tools/SupabaseClient";
+import bcrypt from 'bcryptjs';
 import supabase from "../APIconfig/config.jsx";
+import FlashMessage from '../component/flashMessage';
+import { useNavigate } from 'react-router-dom';
 
 const Connexion = () => {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const [auth, setAuth] = useState([]);
   const [flashMessage, setFlashMessage] = useState('');
   const [sessionStatus, setSessionStatus] = useState({});
+
+  const navigate = useNavigate();
 
   const [registerData, setRegisterData] = useState({
     firstname: '',
     lastname: '',
     password: '',
     langue: '',
-    role: '',
-    phone: '',
+    role: 'user',
     email: '',
   });
 
@@ -29,39 +33,74 @@ const Connexion = () => {
   };
 
 
-  const handleRegisterSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data, error } = await supabase
-          .from('users')
-          .insert([registerData]);
+const handleRegisterSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // Check if the email already exists in the database
+    const { data: existingUsers, error } = await supabase
+        .from('users')
+        .select('email')
+        .eq('email', registerData.email);
 
-      if (error) {
-        setFlashMessage('Registration failed. Please try again.');
+    if (error) {
+      setFlashMessage('Error during email existence check');
+    } else {
+      if (existingUsers.length > 0) {
+        setFlashMessage('Cette adresse email est déjà enregistrée.');
       } else {
-        setFlashMessage('Registration successful!');
-        // You can perform additional actions after successful registration if needed.
+        // If the email doesn't exist, proceed with user registration
+        const hashedPassword = await bcrypt.hash(registerData.password, 10);
+        const userData = {
+          ...registerData,
+          password: hashedPassword,
+        };
+
+        const { data, error } = await supabase
+            .from('users')
+            .insert([userData]);
+
+        if (error) {
+          setFlashMessage('Il y a eu une erreur dans l\'enregistrement');
+        } else {
+          setFlashMessage('Vous êtes bien inscrit');
+          setToggle(false);
+        }
       }
-    } catch (error) {
-      console.error('Error during registration:', error);
     }
-  };
+  } catch (error) {
+    console.error('Error during registration:', error);
+  }
+};
+
+
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
+      const email = String(loginData.email).toString();
+      const password = String(loginData.password).toString();
+
+      console.log(loginData);
       const { data, error } = await supabase
           .from('users')
-          .select('*')
-          .match({ email: loginData.email, password: loginData.password });
+          .select('id, email, password')
+          .eq('email', email);
+
       if (error) {
-        setFlashMessage('Login failed. Please check your credentials.');
+        setFlashMessage('Vos données ne permettent pas l\'identification');
       } else {
         if (data.length > 0) {
-          setFlashMessage('Login successful!');
-          // You can perform additional actions after successful login if needed.
+          // Access the hashed password from the first object in the data array
+          const hashPassword = data[0].password;
+          const isPasswordMatch = await bcrypt.compare(password, hashPassword);
+          if (isPasswordMatch) {
+            setFlashMessage('Bienvenue !');
+            navigate(`/homepage/${data[0].id}`);
+          } else {
+            setFlashMessage('Mot de passe incorrect');
+          }
         } else {
-          setFlashMessage('Login failed. Please check your credentials.');
+          setFlashMessage('Utilisateur non trouvé');
         }
       }
     } catch (error) {
@@ -69,9 +108,13 @@ const Connexion = () => {
     }
   };
 
+
   const handleRegisterChange = (e) => {
     const { name, value } = e.target;
-    setRegisterData((prevData) => ({ ...prevData, [name]: value }));
+    setRegisterData((prevData) => ({
+      ...prevData,
+      [name]: name === 'langue' ? value : value.trim(),
+    }));
   };
 
   const handleChange = (e) => {
@@ -89,7 +132,7 @@ const Connexion = () => {
         {!sessionStatus.session ? (
             <div className="outer-connexion">
               <div className="inner-connexion">
-                {flashMessage && <div className="output-message x-center-position">{flashMessage}</div>}
+                {flashMessage && <FlashMessage message={flashMessage}/>}
                 {toggle ? (
                     <div className="container-inscription">
                       <div className="img-container">
@@ -108,12 +151,21 @@ const Connexion = () => {
                             <input type="text" name="lastname" id="lastname" placeholder="Nom" onChange={handleRegisterChange} required />
                           </div>
                         </div>
+                        {/*<div className="form-elem">*/}
+                        {/*  <select name="langue" id="langue" onChange={handleRegisterChange} required>*/}
+                        {/*    <option value="">Votre langue</option>*/}
+                        {/*    <option value="English">Anglais</option>*/}
+                        {/*    <option value="French">Français</option>*/}
+                        {/*    <option value="Spanish">Espagnol</option>*/}
+                        {/*    <option value="Allemand">Français</option>*/}
+                        {/*    <option value="Ewé">Espagnol</option>*/}
+                        {/*  </select>*/}
+                        {/*</div>*/}
 
                         <div className="form-elem">
                           <label htmlFor="password"></label>
                           <input type="password" name="password" id="password" placeholder="Choisir un mot de passe" onChange={handleRegisterChange} required />
                         </div>
-
 
                         <div className="form-elem">
                           <button className="btn-1" type="submit">Créer son compte</button>
@@ -133,7 +185,7 @@ const Connexion = () => {
                         <form id="login-form" method="post" onSubmit={handleLoginSubmit}>
                           <div className="form-elem">
                             <label htmlFor="email" className="connexion__username"></label>
-                            <input type="email" name="email" id="email" placeholder="arnaud@ymail.com" onChange={handleChange} required />
+                            <input type="text" name="email" id="email" placeholder="arnaud@ymail.com" onChange={handleChange} required />
                           </div>
                           <div className="form-elem">
                             <input type="password" name="password" id="password" placeholder="Mot de passe" onChange={handleChange} required />

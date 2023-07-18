@@ -4,6 +4,7 @@
     overflow-y: hidden;
   }
 
+  @include flashMessage();
 
   .outer-connexion{
     position:absolute;
@@ -97,6 +98,10 @@
               input {
                 width: 50%;
                 max-width: 150px;
+
+                &::placeholder {
+                  color: $darkLavender;
+                }
               }
             }
 
@@ -137,7 +142,7 @@
 
             input{
               &::placeholder {
-                color: $darkBlue;
+                color: $darkLavender;
               }
               /* Microsoft Edge */
               &::-ms-input-placeholder {
