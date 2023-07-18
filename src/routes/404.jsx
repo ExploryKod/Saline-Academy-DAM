@@ -1,5 +1,4 @@
-import { Outlet } from 'react-router-dom';
-import notFoundImage from '../assets/not_found.jpg';
+import notFoundImage from '../assets/back_woman.jpg';
 
 export const NotFoundPage = () => {
     const path = window.location.pathname;
@@ -7,17 +6,16 @@ export const NotFoundPage = () => {
     const searchedPage = urlParts[1];
 
     return (
-    
-      <div className="not-found-container">
-            <div className="not-found__sub-container">    
-                <img src={notFoundImage} alt="promeneur perdu"/>
+            <div className="not-found-container">
+                <div className="not-found__img-container">
+                    <img src={notFoundImage} alt="promeneur perdu"/>
+                </div>
                 <div className="not-found__text-container">
                     <h1 className="not-found__title">404</h1>
-                    <p> Aucune page "{searchedPage}" n'a été trouvé.</p>)
+                    <p> Aucune page "{searchedPage}" trouvé.</p>
+                    <a href="/" >Retour</a>
                 </div>
         </div>
-        {/* <Outlet/> */}
-      </div>
     );
   };
   

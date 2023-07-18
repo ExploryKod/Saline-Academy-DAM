@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import salineLogoLight from '../assets/saline_logo/logo_light.svg';
+import SupabaseService from "../tools/SupabaseClient";
 
 const Connexion = () => {
   const [toggle, setToggle] = useState(true);
-  const [formData, setFormData] = useState({password: "", username: ""})
-  const [registerData, setRegisterData] = useState({username: "", firstname:"", lastname: "", email:"", password:"", phone:""})
+  const [auth, setAuth] = useState([]);
+  // const [formData, setFormData] = useState({password: "", username: ""})
+  // const [registerData, setRegisterData] = useState({username: "", firstname:"", lastname: "", email:"", password:"", phone:""})
   const [flashMessage, setFlashMessage] = useState('');
   const [sessionStatus, setSessionStatus] = useState({});
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
+
+  useEffect(() => {
+    const sbs = new SupabaseService();
+
+    sbs.getTest().then((p) => {
+      setAuth(p.data);
+    });
+  }, []);
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
