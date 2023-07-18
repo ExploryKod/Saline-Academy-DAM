@@ -5,6 +5,7 @@
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
+	border: 1px solid #D8DBE5;
 }
 
 .project-card-logo {
