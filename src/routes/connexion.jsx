@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import salineLogoLight from '../assets/saline_logo/logo_light.svg';
 import SupabaseService from "../tools/SupabaseClient";
 import bcrypt from 'bcryptjs';
-import supabase from "../APIconfig/config.jsx";
 import FlashMessage from '../component/flashMessage';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +11,7 @@ const Connexion = () => {
   const [flashMessage, setFlashMessage] = useState('');
   const [sessionStatus, setSessionStatus] = useState({});
 
+  const supabaseService = new SupabaseService();
   const navigate = useNavigate();
 
   const [registerData, setRegisterData] = useState({
@@ -32,12 +32,26 @@ const Connexion = () => {
     setToggle(!toggle);
   };
 
+  const isPasswordStrong = (password) => {
+    const regexUpperCase = /[A-Z]/;
+    const regexLowerCase = /[a-z]/;
+    const regexNumber = /[0-9]/;
+    const regexSpecial = /[!@#$%^&*()_+[\]{};':"\\|,.<>?]/;
+
+    return (
+        password.length >= 8 &&
+        regexUpperCase.test(password) &&
+        regexLowerCase.test(password) &&
+        regexNumber.test(password) &&
+        regexSpecial.test(password)
+    );
+  };
 
 const handleRegisterSubmit = async (e) => {
   e.preventDefault();
   try {
     // Check if the email already exists in the database
-    const { data: existingUsers, error } = await supabase
+    const { data: existingUsers, error } = await supabaseService.client
         .from('users')
         .select('email')
         .eq('email', registerData.email);
@@ -48,6 +62,12 @@ const handleRegisterSubmit = async (e) => {
       if (existingUsers.length > 0) {
         setFlashMessage('Cette adresse email est déjà enregistrée.');
       } else {
+        if (!isPasswordStrong(registerData.password)) {
+          setFlashMessage(
+              'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.'
+          );
+          return;
+        }
         // If the email doesn't exist, proceed with user registration
         const hashedPassword = await bcrypt.hash(registerData.password, 10);
         const userData = {
@@ -55,7 +75,7 @@ const handleRegisterSubmit = async (e) => {
           password: hashedPassword,
         };
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseService.client
             .from('users')
             .insert([userData]);
 
@@ -81,7 +101,7 @@ const handleRegisterSubmit = async (e) => {
       const password = String(loginData.password).toString();
 
       console.log(loginData);
-      const { data, error } = await supabase
+      const { data, error } = await supabaseService.client
           .from('users')
           .select('id, email, password')
           .eq('email', email);
