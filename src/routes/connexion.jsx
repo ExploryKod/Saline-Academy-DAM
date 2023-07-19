@@ -54,7 +54,7 @@ const Connexion = () => {
     if (sessionData.session_id) {
       navigate('/homepage');
     }
-  }, [sessionData, navigate]);
+  }, [sessionData]);
   
   const checkPasswordStrength = (password) => {
     const result = zxcvbn(password);
@@ -134,24 +134,17 @@ const handleRegisterSubmit = async (e) => {
           const hashPassword = data[0].password;
           const isPasswordMatch = await bcrypt.compare(password, hashPassword);
           if (isPasswordMatch) {
-            setLoading(false);
-            setFlashMessage('Bienvenue !');
-            // Session 
-            const idToken = data[0].id; 
-            const emailToken = data[0].email; 
-            // sessionStorage.setItem('idToken', idToken);
-            // sessionStorage.setItem('emailToken', emailToken);
-            setSessionData({ session_id: data[0].id, session_email: data[0].email });
             
-            // Redirect
+           
+            // Mise en place de la session utilisateur
+            setSessionData({ session_id: data[0].id, session_email: data[0].email });
             navigate("/homepage");
           } else {
             setFlashMessage('Mot de passe incorrect');
-            setLoading(false);
+            
           }
         } else {
           setFlashMessage('Utilisateur non trouvé');
-          setLoading(false);
         }
       }
     } catch (error) {

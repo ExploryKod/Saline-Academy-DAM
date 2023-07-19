@@ -1,17 +1,16 @@
 import { createContext, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-
+  const navigate = useNavigate();
   const [sessionData, setSessionData] = useState({});
 
     // Logout from the connexion session 
   const handleLogout = () => {
-    sessionStorage.removeItem('idToken');
-    sessionStorage.removeItem('emailToken');
     sessionStorage.clear();
     setSessionData({}); 
+    navigate('/');
   };
 
 

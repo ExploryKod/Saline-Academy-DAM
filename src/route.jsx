@@ -17,18 +17,21 @@ const RoutesComponent = () => {
         setSessionData({ session_id: sessionStorage.getItem('idToken'), session_email: sessionStorage.getItem('emailToken') });
       }, []);
 
+      console.log('session_id',sessionData.session_id);
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/homepage" replace />} />
-        <Route path="/homepage" element={<App />} />
-        <Route path="/test" element={<div>Not found</div>} />
-        <Route path="/create" element={<CreateProject />} />
-        <Route path="/project-detail-general" element={<ProjectDetailGeneral/>} />
-        <Route path="/project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />
-        <Route path="/projet-detail-add-rush" element={<AddRushPage/>}/>
-      </Routes>
-    </Router>
+      <>
+      {sessionData.session_id ? (
+          <Routes>
+              <Route path="/" element={<Navigate to="/homepage" replace />} />
+              <Route path="/homepage" element={<App />} />
+              <Route path='*' element={<NotFoundPage />} />
+          </Routes>):(
+              <Routes>
+                  <Route path="/" element={<Connexion />} />
+                  <Route path='*' element={<NotFoundPage />} />
+              </Routes>)}
+      </>
   );
 };
 
