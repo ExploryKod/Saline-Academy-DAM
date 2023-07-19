@@ -1,21 +1,22 @@
 * {
     box-sizing: border-box;
-  }
+}
+
+html, body {
+  scroll-behavior: smooth;
+  vertical-align: baseline;
+  overflow-y: hidden;
+}
   
-  body {
+body {
     margin: 0;
-    padding: 20px 40px;
-    font-family: 'Orkney', sans-serif;
+    padding:0;
+    font-family: $NotoSans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
-  }
-  
-  a {
+
+a {
     text-decoration: none;
     color: black;
   }
@@ -23,8 +24,4 @@
 li {
     list-style: none;
   }
-
-  .wrapper-front,.layout-front-wrapper{
-    height:calc(100% - 47px);
-}
 

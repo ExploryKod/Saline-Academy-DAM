@@ -1,18 +1,20 @@
-
 /* Class transversales - Bases */
 @import 'bases/font';
 @import 'bases/variables';
+@import 'bases/mixin';
 @import 'bases/reset';
 @import 'bases/responsive';
 
 /* Style for some utilities */
-@import 'utilities/alert';
+@import 'utilities/passwordStrength';
 
 /* Style for components */
 @import 'components/buttons';
 
 /* Style for routes (pages) */
 @import 'routes/404';
+@import 'routes/connexion';
+@import 'routes/userDeletePage';
 
 /* TODO: styles pour l'exemple à supprimer */
 @import './index';
