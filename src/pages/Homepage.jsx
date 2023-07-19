@@ -14,7 +14,7 @@ const Homepage = () => {
   useEffect(() => {
     const sbs = new SupabaseService();
 
-    sbs.getProjets().then((p) => {
+    sbs.getAllProjects().then((p) => {
         setProjets(p.data);
         setHasPriority(p.data.filter((p) => p.hasPriority === true))
     });
