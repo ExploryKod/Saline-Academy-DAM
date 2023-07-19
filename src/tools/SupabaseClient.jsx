@@ -27,6 +27,10 @@ class SupabaseService {
         return this.client.from("users")
         .select('*');
     }
+    async getAllProjects() {
+        return this.client.from("projets")
+        .select('*');
+    }
     // async getTestBySlug(slug) {
     //     return this.client.from("class")
     //       .select('*')

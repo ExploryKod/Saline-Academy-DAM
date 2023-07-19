@@ -1,12 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import TestApi from './component/testApi'
 import './styles/style.scss'
 import ProjectCard from './component/ProjectCard'
+import SupabaseService from "./tools/SupabaseClient";
 
+
+  
 function App() {
+  const [projects, setProjects] = useState([]);
   const [count, setCount] = useState(0)
+  const sbsProjects = new SupabaseService();
+
+  useEffect(() => {
+    sbsProjects.getAllProjects().then((p) => {
+        setProjects(p.data);
+    });
+  })
 
   return (
     <>
@@ -31,7 +42,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-      <ProjectCard title="Nom du Projet" state="État" status="Status"/>
+      {projects.map((project, index) => (
+        <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
+      ))}
     </>
   )
 }
