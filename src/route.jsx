@@ -1,12 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { Navigate, Route, Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { AppProvider } from './AppContext';
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AppContext } from './AppContext';
-import App from "./App";
+import App from "./App"
 import Connexion from "./routes/connexion"
 import NotFoundPage from './routes/404';
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import App from "./App"
 import AddRushPage from './component/AddRushPage';
 import CreateProject from "./CreateProject";
 import ProjectDetailGeneral from "./Project-detail-general";
@@ -22,8 +19,6 @@ const RoutesComponent = () => {
     console.log('session_id', sessionData.session_id);
 
     return (
-        <Router>
-            <AppProvider>
                 {sessionData.session_id ? (
                 <Routes>
                     <Route path="/" element={<Navigate to="/homepage" replace />} />
@@ -38,8 +33,6 @@ const RoutesComponent = () => {
                         <Route path="/" element={<Connexion />} />
                         <Route path='*' element={<NotFoundPage />} />
                     </Routes>)}
-                </AppProvider>
-        </Router>
     );
 };
 
