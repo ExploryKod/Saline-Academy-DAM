@@ -5,8 +5,6 @@ import TestApi from './component/testApi'
 import './styles/style.scss'
 import ProjectCard from './component/ProjectCard'
 import SupabaseService from "./tools/SupabaseClient";
-
-
   
 function App() {
   const [projects, setProjects] = useState([]);
