@@ -1,15 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import salineLogoLight from '../assets/saline_logo/logo_light.svg';
 import SupabaseService from "../tools/SupabaseClient";
+import PasswordStrengthIndicator from "../component/passwordStrengthIndicator.jsx";
 import bcrypt from 'bcryptjs';
 import FlashMessage from '../component/flashMessage';
 import { useNavigate } from 'react-router-dom';
+import zxcvbn from 'zxcvbn';
+import jwt_decode from "jwt-decode";
+
 
 const Connexion = () => {
   const [toggle, setToggle] = useState(false);
-  const [auth, setAuth] = useState([]);
   const [flashMessage, setFlashMessage] = useState('');
   const [sessionStatus, setSessionStatus] = useState({});
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [loading, setLoading] = useState(false)
 
   const supabaseService = new SupabaseService();
   const navigate = useNavigate();
@@ -32,23 +37,43 @@ const Connexion = () => {
     setToggle(!toggle);
   };
 
-  const isPasswordStrong = (password) => {
-    const regexUpperCase = /[A-Z]/;
-    const regexLowerCase = /[a-z]/;
-    const regexNumber = /[0-9]/;
-    const regexSpecial = /[!@#$%^&*()_+[\]{};':"\\|,.<>?]/;
 
-    return (
-        password.length >= 8 &&
-        regexUpperCase.test(password) &&
-        regexLowerCase.test(password) &&
-        regexNumber.test(password) &&
-        regexSpecial.test(password)
-    );
+  const checkUserSession = () => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    if (jwtToken) {
+      const decodedToken = jwt_decode(jwtToken);
+      const currentTime = Date.now() / 1000; // Convert to seconds
+      if (decodedToken.exp < currentTime) {
+        // Token has expired, clear the user session
+        clearUserSession();
+      } else {
+        // Token is valid, set the user session status
+        setSessionStatus({ session: true });
+      }
+    }
   };
+  
+  const clearUserSession = () => {
+    localStorage.removeItem("jwtToken");
+    setSessionStatus({ session: false });
+  };
+  
+  useEffect(() => {
+    checkUserSession();
+  }, []);
+
+  const checkPasswordStrength = (password) => {
+    const result = zxcvbn(password);
+    return {
+      score: result.score,
+      feedback: result.feedback,
+    };
+  };
+
 
 const handleRegisterSubmit = async (e) => {
   e.preventDefault();
+  setLoading(true);
   try {
     // Check if the email already exists in the database
     const { data: existingUsers, error } = await supabaseService.client
@@ -62,10 +87,8 @@ const handleRegisterSubmit = async (e) => {
       if (existingUsers.length > 0) {
         setFlashMessage('Cette adresse email est déjà enregistrée.');
       } else {
-        if (!isPasswordStrong(registerData.password)) {
-          setFlashMessage(
-              'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.'
-          );
+        if(passwordStrength < 2) {
+          setFlashMessage('Renforcez votre mot de passe');
           return;
         }
         // If the email doesn't exist, proceed with user registration
@@ -83,12 +106,18 @@ const handleRegisterSubmit = async (e) => {
           setFlashMessage('Il y a eu une erreur dans l\'enregistrement');
         } else {
           setFlashMessage('Vous êtes bien inscrit');
+          // Saving JWT in local storage if successful registration 
+          // TODO: implement better security session management (https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/)
+          // const jwtToken = createJwtToken(data[0].id); 
+          // localStorage.setItem("jwtToken", jwtToken);
           setToggle(false);
+          setLoading(false);
         }
       }
     }
   } catch (error) {
-    console.error('Error during registration:', error);
+    console.error('Erreur lors de l\' inscription:', error);
+    setLoading(false);
   }
 };
 
@@ -96,11 +125,13 @@ const handleRegisterSubmit = async (e) => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const email = String(loginData.email).toString();
       const password = String(loginData.password).toString();
-
-      console.log(loginData);
+      // const token = localStorage.getItem("jwtToken");
+      // const decoded = jwt_decode(token);
+  
       const { data, error } = await supabaseService.client
           .from('users')
           .select('id, email, password')
@@ -114,17 +145,26 @@ const handleRegisterSubmit = async (e) => {
           const hashPassword = data[0].password;
           const isPasswordMatch = await bcrypt.compare(password, hashPassword);
           if (isPasswordMatch) {
+            setLoading(false);
             setFlashMessage('Bienvenue !');
+            // Session 
+            // const jwtToken = createJwtToken(data[0].id); 
+            // localStorage.setItem("jwtToken", jwtToken);
+
+            // Redirect
             navigate(`/homepage/${data[0].id}`);
           } else {
             setFlashMessage('Mot de passe incorrect');
+            setLoading(false);
           }
         } else {
           setFlashMessage('Utilisateur non trouvé');
+          setLoading(false);
         }
       }
     } catch (error) {
       console.error('Error during login:', error);
+      setLoading(false);
     }
   };
 
@@ -135,6 +175,11 @@ const handleRegisterSubmit = async (e) => {
       ...prevData,
       [name]: name === 'langue' ? value : value.trim(),
     }));
+    if(name === 'password') {
+      console.log(value)
+    const strengthInfo = checkPasswordStrength(value);
+    setPasswordStrength(strengthInfo.score);
+   }
   };
 
   const handleChange = (e) => {
@@ -142,10 +187,10 @@ const handleRegisterSubmit = async (e) => {
     setLoginData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // useEffect(() => {
-  //   const session = supabase.auth.session();
-  //   setSessionStatus({ session });
-  // }, []);
+
+  console.log('session', sessionStatus);
+  console.log('pasword strength', passwordStrength);
+  console.log('loading', loading);
 
   return (
       <main className="page-connexion">
@@ -171,21 +216,13 @@ const handleRegisterSubmit = async (e) => {
                             <input type="text" name="lastname" id="lastname" placeholder="Nom" onChange={handleRegisterChange} required />
                           </div>
                         </div>
-                        {/*<div className="form-elem">*/}
-                        {/*  <select name="langue" id="langue" onChange={handleRegisterChange} required>*/}
-                        {/*    <option value="">Votre langue</option>*/}
-                        {/*    <option value="English">Anglais</option>*/}
-                        {/*    <option value="French">Français</option>*/}
-                        {/*    <option value="Spanish">Espagnol</option>*/}
-                        {/*    <option value="Allemand">Français</option>*/}
-                        {/*    <option value="Ewé">Espagnol</option>*/}
-                        {/*  </select>*/}
-                        {/*</div>*/}
-
                         <div className="form-elem">
                           <label htmlFor="password"></label>
                           <input type="password" name="password" id="password" placeholder="Choisir un mot de passe" onChange={handleRegisterChange} required />
                         </div>
+                        {passwordStrength > 0 && (
+                            <PasswordStrengthIndicator strength={passwordStrength} />
+                        )}
 
                         <div className="form-elem">
                           <button className="btn-1" type="submit">Créer son compte</button>
