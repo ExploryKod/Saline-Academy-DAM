@@ -1,0 +1,26 @@
+.btn-1 {
+    background-color: $lightLavender;
+    color: $darkBlue;
+    border-radius: 10px;
+    height: 2.6em;
+    font-size: 17px;
+    width: 200px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover,
+    &:focus {
+      color: $lightLavender;
+      background-color: $darkBlue;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    }
+    &__medium {
+      height: 1.6em;
+      width: 130px;
+      font-size: 16px;
+    }
+  }
+

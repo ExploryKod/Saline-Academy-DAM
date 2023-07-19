@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
 import TestApi from './component/testApi'
+import './styles/style.scss'
+import ProjectCard from './component/ProjectCard'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -30,6 +31,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <ProjectCard title="Nom du Projet" state="État" status="Status"/>
     </>
   )
 }
