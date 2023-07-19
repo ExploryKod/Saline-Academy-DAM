@@ -5,5 +5,5 @@ import RoutesComponent from './route.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RoutesComponent />
-  </React.StrictMode>,
+  </React.StrictMode>
 )
