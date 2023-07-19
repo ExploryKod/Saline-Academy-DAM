@@ -1,6 +1,7 @@
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import './Project-detail-general-update.css'
 import * as React from 'react';
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -18,6 +19,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
+import ProjectCard from './component/ProjectCard'
+import SupabaseService from "./tools/SupabaseClient";
 
 
 function ProjectDetailGeneralUpdate() {
@@ -25,6 +28,14 @@ function ProjectDetailGeneralUpdate() {
     const navigate = useNavigate();
     const [description, setDescription] = React.useState('');
     const [professor, setProfessor] = React.useState('');
+    const [projects, setProjects] = useState([]);
+    const sbsProjects = new SupabaseService();
+
+    useEffect(() => {
+        sbsProjects.getAllProjects().then((p) => {
+            setProjects(p.data);
+        });
+      })
 
     const handleChange = (event) => {
       setDescription(event.target.value);
@@ -50,6 +61,13 @@ function ProjectDetailGeneralUpdate() {
   
     return (
       <>
+      <div className='splitscreen'>
+        <div className='leftSide'>
+        {projects.map((project, index) => (
+        <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
+      ))}
+        </div>    
+        <div className='rightSide'></div>
       <div className='project-detail-background'>
           <h1 className='project-detail-title'>Enregistrement Cello</h1>
           <section className='project-detail-section'>
@@ -167,6 +185,7 @@ function ProjectDetailGeneralUpdate() {
         </Dialog>
           </Stack>
           </div>
+      </div>
       </div>
       </>
     )
