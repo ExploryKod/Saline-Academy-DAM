@@ -1,0 +1,63 @@
+.grayBackground{
+    height: 470px;
+    width: 470px;
+    background-color: #F2F3F7;
+    position:absolute;
+    left: 35%;
+    padding: 20px;
+}
+
+.addFile{
+    color: transparent;
+    height: 100px;
+    width: 140px;
+    margin-right: 56%;
+    opacity: 0; 
+    z-index: 2;
+    position: relative;
+    top: 15px;
+    left: -24px;
+}
+
+.addRushButtonSecondVersion{
+    position: relative;
+    top: -85px;
+    background-color: #C2C2C2;
+    height: 100px;
+    width: 140px;
+    padding-top: 25px;
+    z-index: 1;
+}
+
+.addRushButtonSecondVersion:hover, .addFile:hover{
+   cursor: pointer;
+}
+
+.labelAddVideo {
+    padding-right: 72%;
+}
+
+.labelAddSound {
+    padding-right: 62%;
+}
+
+.submitButton {
+    position: relative;
+    top: -80px;
+    left: 161px;
+}
+
+.addRush{
+    width: 180px;
+    position: relative;
+    right: 96px;
+    opacity: 0;
+    z-index: 2;
+}
+
+.importVideo {
+    position: relative;
+    right: 280px;
+    z-index: 1;
+}
+
