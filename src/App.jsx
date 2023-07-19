@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import './styles/style.scss'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import TestApi from './component/testApi'
-import './styles/style.scss'
 import ProjectCard from './component/ProjectCard'
+import { AppContext } from './AppContext';
 import SupabaseService from "./tools/SupabaseClient";
-  
+
 function App() {
   const [projects, setProjects] = useState([]);
   const [count, setCount] = useState(0)
+
+    const { sessionData, setSessionData } = useContext(AppContext);
+    const { handleLogout } = useContext(AppContext);
+
+    const disconnectUser = () => {
+        handleLogout();
+    };
   const sbsProjects = new SupabaseService();
 
   useEffect(() => {
@@ -28,6 +36,8 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <p>Session test data: {sessionData.session_id} </p>
+      <button type="button" onClick={disconnectUser}>Disconnect</button>
       <TestApi />
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>

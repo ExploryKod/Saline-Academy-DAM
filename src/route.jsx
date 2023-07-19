@@ -1,7 +1,7 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import Connexion from "./routes/connexion";
+import { useState, useEffect, useContext } from "react";
+import Connexion from "./routes/connexion"
+import { AppContext } from './AppContext';
 import NotFoundPage from './routes/404';
-import App from "./App";
 import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import App from "./App"
 import AddRushPage from './component/AddRushPage';
@@ -10,6 +10,13 @@ import ProjectDetailGeneral from "./Project-detail-general";
 import ProjectDetailGeneralUpdate from "./Projet-detail-general-update";
 
 const RoutesComponent = () => {
+    const isUser = false;
+    const { sessionData, setSessionData } = useContext(AppContext);
+
+    useEffect(() => {
+        setSessionData({ session_id: sessionStorage.getItem('idToken'), session_email: sessionStorage.getItem('emailToken') });
+      }, []);
+
   return (
     <Router>
       <Routes>

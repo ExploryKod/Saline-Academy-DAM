@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import salineLogoLight from '../assets/saline_logo/logo_light.svg';
 import SupabaseService from "../tools/SupabaseClient";
 import PasswordStrengthIndicator from "../component/passwordStrengthIndicator.jsx";
@@ -6,16 +6,15 @@ import bcrypt from 'bcryptjs';
 import FlashMessage from '../component/flashMessage';
 import { useNavigate } from 'react-router-dom';
 import zxcvbn from 'zxcvbn';
-import jwt_decode from "jwt-decode";
+import { AppContext } from '../AppContext';
 
 
 const Connexion = () => {
   const [toggle, setToggle] = useState(false);
   const [flashMessage, setFlashMessage] = useState('');
-  const [sessionStatus, setSessionStatus] = useState({});
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [loading, setLoading] = useState(false)
-
+  const { sessionData, setSessionData } = useContext(AppContext); 
   const supabaseService = new SupabaseService();
   const navigate = useNavigate();
 
@@ -26,6 +25,7 @@ const Connexion = () => {
     langue: '',
     role: 'user',
     email: '',
+    token: ''
   });
 
   const [loginData, setLoginData] = useState({
@@ -37,31 +37,25 @@ const Connexion = () => {
     setToggle(!toggle);
   };
 
-
-  const checkUserSession = () => {
-    const jwtToken = localStorage.getItem("jwtToken");
-    if (jwtToken) {
-      const decodedToken = jwt_decode(jwtToken);
-      const currentTime = Date.now() / 1000; // Convert to seconds
-      if (decodedToken.exp < currentTime) {
-        // Token has expired, clear the user session
-        clearUserSession();
-      } else {
-        // Token is valid, set the user session status
-        setSessionStatus({ session: true });
-      }
+  // Faire persister la data même si je change de tab en combinaison avec context AP
+  useEffect(() => {
+    const storedSessionData = localStorage.getItem('sessionData');
+    if (storedSessionData) {
+      setSessionData(JSON.parse(storedSessionData));
     }
-  };
-  
-  const clearUserSession = () => {
-    localStorage.removeItem("jwtToken");
-    setSessionStatus({ session: false });
-  };
+  }, [setSessionData]);
+
   
   useEffect(() => {
-    checkUserSession();
-  }, []);
+    localStorage.setItem('sessionData', JSON.stringify(sessionData));
+  }, [sessionData]);
 
+  useEffect(() => {
+    if (sessionData.session_id) {
+      navigate('/homepage');
+    }
+  }, [sessionData, navigate]);
+  
   const checkPasswordStrength = (password) => {
     const result = zxcvbn(password);
     return {
@@ -106,10 +100,7 @@ const handleRegisterSubmit = async (e) => {
           setFlashMessage('Il y a eu une erreur dans l\'enregistrement');
         } else {
           setFlashMessage('Vous êtes bien inscrit');
-          // Saving JWT in local storage if successful registration 
-          // TODO: implement better security session management (https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/)
-          // const jwtToken = createJwtToken(data[0].id); 
-          // localStorage.setItem("jwtToken", jwtToken);
+        
           setToggle(false);
           setLoading(false);
         }
@@ -129,8 +120,6 @@ const handleRegisterSubmit = async (e) => {
     try {
       const email = String(loginData.email).toString();
       const password = String(loginData.password).toString();
-      // const token = localStorage.getItem("jwtToken");
-      // const decoded = jwt_decode(token);
   
       const { data, error } = await supabaseService.client
           .from('users')
@@ -148,11 +137,14 @@ const handleRegisterSubmit = async (e) => {
             setLoading(false);
             setFlashMessage('Bienvenue !');
             // Session 
-            // const jwtToken = createJwtToken(data[0].id); 
-            // localStorage.setItem("jwtToken", jwtToken);
-
+            const idToken = data[0].id; 
+            const emailToken = data[0].email; 
+            // sessionStorage.setItem('idToken', idToken);
+            // sessionStorage.setItem('emailToken', emailToken);
+            setSessionData({ session_id: data[0].id, session_email: data[0].email });
+            
             // Redirect
-            navigate(`/homepage/${data[0].id}`);
+            navigate("/homepage");
           } else {
             setFlashMessage('Mot de passe incorrect');
             setLoading(false);
@@ -188,13 +180,12 @@ const handleRegisterSubmit = async (e) => {
   };
 
 
-  console.log('session', sessionStatus);
+  console.log('session', sessionData);
   console.log('pasword strength', passwordStrength);
   console.log('loading', loading);
 
   return (
       <main className="page-connexion">
-        {!sessionStatus.session ? (
             <div className="outer-connexion">
               <div className="inner-connexion">
                 {flashMessage && <FlashMessage message={flashMessage}/>}
@@ -261,7 +252,6 @@ const handleRegisterSubmit = async (e) => {
                 )}
               </div>
             </div>
-        ): (<div className="no-session">Vous êtes déjà connecté</div>)}
       </main>
   );
 };
