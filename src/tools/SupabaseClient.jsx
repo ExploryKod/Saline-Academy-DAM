@@ -11,12 +11,22 @@ class SupabaseService {
 
         this.client = createClient(supabaseUrl, supabaseKey);
     }
-
+    
     async getTest() {
         return this.client.from("class")
-            .select('*')
+        .select('*')
+    }
+    
+    async createProject(projectData) {
+      return this.client.from("projets")
+        .insert(projectData)
+        .select();
     }
 
+    async getAllUsers() {
+        return this.client.from("users")
+        .select('*');
+    }
     // async getTestBySlug(slug) {
     //     return this.client.from("class")
     //       .select('*')
@@ -36,6 +46,7 @@ class SupabaseService {
     //       .eq("id", pageId)
     //       .select();
     //   }
+
 }
 
 export default SupabaseService;
