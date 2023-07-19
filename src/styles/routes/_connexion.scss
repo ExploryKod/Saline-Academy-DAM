@@ -161,6 +161,10 @@
               padding-left: 10px;
               background-color: $lightLavender;
 
+              @include media-breakpoint-down(xs) {
+                width: 80%;
+              }
+
               &:hover {
                 background-color: $grey-2;
               }
