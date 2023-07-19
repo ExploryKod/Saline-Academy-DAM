@@ -1,0 +1,27 @@
+body{
+    background-color: #F2F3F7;
+}
+
+.globalContainer{
+    display: flex;
+}
+
+.firstContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+.smallBlock{
+    padding: 0 !important; 
+}
+
+
+.numberBlock{
+    font-size: 42px;
+    margin:17px 0px 0px 28px;
+}
+
+.titleBlock{
+    font-size: 18px;
+    margin-left:28px;
+}
