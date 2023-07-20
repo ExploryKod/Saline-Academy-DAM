@@ -6,10 +6,11 @@ import ProjectCard from "../component/ProjectCard";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Navbar from "../component/Navbar";
 
-const Homepage = () => {
+const Homepage = (tokenId) => {
   const [projets, setProjets] = useState([]);
   const [ hasPriority, setHasPriority] = useState([])
   const [ videoNotValidated, setVideoNotValidated] = useState([])
+  const [ currentUser, setCurrentUser ] = useState(null)
 
   useEffect(() => {
     const sbs = new SupabaseService();
@@ -21,6 +22,10 @@ const Homepage = () => {
 
     sbs.getUnvalidatedVideoEditing().then((p) => {
         setVideoNotValidated(p.data)
+    })
+
+    sbs.getCurrentUser(tokenId.tokenId).then((p) => {
+        setCurrentUser(p.data)
     })
 
   }, []);

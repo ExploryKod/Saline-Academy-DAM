@@ -18,7 +18,7 @@ const RoutesComponent = () => {
             {token ? (
             <Routes>
                 <Route path="/" element={<Navigate to="/homepage" replace />} />
-                <Route path="/homepage" element={<Homepage />} />
+                <Route path="/homepage" element={<Homepage tokenId={token} />} />
                 <Route path="/create" element={<CreateProject />} />
                 <Route path="/project-detail-general" element={<ProjectDetailGeneral/>} />
                 <Route path="/project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />

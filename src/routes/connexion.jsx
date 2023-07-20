@@ -11,7 +11,7 @@ import { AppContext } from '../AppContext';
 async function loginUser(credentials, id) {
   const sbs = new SupabaseService();
 
-  const token = fetch(`http://localhost:5326/login/${id}`, {
+  const token = await fetch(`http://localhost:5326/login/${id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ async function loginUser(credentials, id) {
   })
     .then(data => data.json())
 
-  sbs.saveTokenUser(token, id);
+  sbs.saveTokenUser(token.token, id);
 
   return token
 }

@@ -86,8 +86,14 @@ class SupabaseService {
 
     async saveTokenUser(token, id) {
         return this.client.from("users")
-            .update(token)
+            .update({ token: token})
             .eq('id', id)
+    }
+
+    async getCurrentUser(tokenId) {
+        return this.client.from("users")
+            .select('*')
+            .eq('token', tokenId)
     }
 }
 
