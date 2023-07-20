@@ -6,17 +6,18 @@ import Navbar from "../component/Navbar";
 import styles from "./planningBoard.module.scss";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { EmailForm } from "../component/emailForm";
+import { capitalizeFirstLetter, formatDate } from '../tools/stringTreatment';
 
 const initialProjectPlanningData = {
-  project_id: null,
+  id: null,
   title: "",
   description: "",
   course: "",
   manager: "",
-  status: "",
+  status: null,
   teacher_id: null,
   room_id: null,
-  promise_date: null,
+  promised_date: null,
   finished_at: null,
   user_id: null,
   crew_id: null,
@@ -45,9 +46,12 @@ const PlanningBoard = () => {
   
         // If there is data, map over each row and update the projectPlanningData state
         if (data && data.length > 0) {
-          const mappedData = data.map((projectData) => ({
+          const mappedData = data.filter((projectData) => projectData.promised_date && projectData.title && projectData.status).map((projectData) => ({
             ...initialProjectPlanningData,
             ...projectData,
+            title: capitalizeFirstLetter(projectData.title),
+            status: capitalizeFirstLetter(projectData.status), 
+            promised_date: formatDate(projectData.promised_date).toString(),
           }));
           setProjectPlanningData(mappedData);
         }
@@ -101,16 +105,6 @@ const PlanningBoard = () => {
 
           {/* <EmailForm manager={manager}/> */}
 
-        <div>
-        {projectPlanningData.map((projectData, index) => (
-        <div key={index}>
-          <h1>{projectData.title}</h1>
-          <p>{projectData.description}</p>
-          <hr/><br/>
-        </div>
-      ))}
-        </div>
-  
           <div className={styles.firstContainer}>
               <h1>Vos projets en cours</h1>
 
@@ -124,26 +118,31 @@ const PlanningBoard = () => {
                   <div className={styles.columnTitles}>
                         <h2>Projets</h2>
                       </div>
-                      {projectsList.map((project, index) => (
-                      <Box
-                          key={index}
-                          sx={{
-                              padding: 2,
-                              width: 263,
-                              height: 120,
-                              backgroundColor: 'var(--light-blue, white)',
-                              border: '1px solid blue',
-                              borderRadius: 5,
-                              color:'black',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              justifyContent: 'center',
-                          }}
-                      >
-                          <p className="">{project.name}</p>
-                          <p className="">{project.status}</p>
-                      </Box>
-                      ))}
+                      {projectPlanningData
+                          .filter((project) => project.title && project.status) 
+                          .map((project, index) => (
+                            <Box
+                              key={index}
+                              sx={{
+                                padding: 2,
+                                width: 263,
+                                height: 120,
+                                backgroundColor: 'var(--light-blue, white)',
+                                border: '1px solid blue',
+                                borderRadius: 5,
+                                color: 'black',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                              }}
+                            >
+
+                              <h3>{project.title}</h3>
+                              <p>{project.status}</p>
+                            </Box>
+                          ))}
+
+                    
                   </Container>
                   <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                   <div className={styles.columnPriority}>
@@ -185,7 +184,9 @@ const PlanningBoard = () => {
                       <div className={styles.columnTitles}>
                         <h2>Echéances</h2>
                       </div>
-                      {projectsList.map(project => (
+                      {projectPlanningData
+                          .filter((project) => project.promised_date.toString() !== '01/01/1970' ? project.promised_date : 'Pas de date')
+                          .map(project => (
                       <Box
                           sx={{
                               width: 100,
@@ -194,7 +195,7 @@ const PlanningBoard = () => {
                               color:'black',
                           }}
                       >
-                          <p className="">{project.name}</p>
+                          <p className="">{project.promised_date}</p>
                       </Box>
                       ))}
                   </Container>
