@@ -4,24 +4,24 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-function Tabmenu () {
+function TabMenu ({ givePage }) {
 	const [value, setValue] = React.useState('one');
+
 
 	const pageChange = () => {
 		if (value === "one") {
-			return "Summary"
+			return givePage(value)
 		}
 		if (value === "two") {
-			return "Document"
+			return givePage(value)
 		}
 		
 		if (value === "three") {
-			return "Rush"
+			return givePage(value)
 		}
 		if (value === "four") {
-			return "Planning"
+			return givePage(value)
 		}
-		console.log(value);
 	}
 
 	const handleChange = (event, newValue) => {
@@ -51,4 +51,4 @@ function Tabmenu () {
 	);
   };
 
-export default Tabmenu
+export default TabMenu

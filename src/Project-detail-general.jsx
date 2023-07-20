@@ -28,13 +28,18 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import ProjectCard from './component/ProjectCard'
 import SupabaseService from "./tools/SupabaseClient";
-import Tabmenu from './component/Tabmenu';
+import Tabmenu from './component/TabMenu';
 
 
 function ProjectDetailGeneral() {
 
     const [projects, setProjects] = useState([]);
     const sbsProjects = new SupabaseService();
+    const [page, setPage] = React.useState("")
+
+    const havePage = (page) => {
+      setPage(page);
+    };
 
     useEffect(() => {
         sbsProjects.getAllProjects().then((p) => {
@@ -80,7 +85,12 @@ function ProjectDetailGeneral() {
   };
 
   return (
-    <><div className='splitscreen'>
+    <>
+    {page === "one" && <div>one</div>}
+    {page === "two" && <div>two</div>}
+    {page === "three" && <div>three</div>}
+    {page === "four" && <div>four</div>}
+    <div className='splitscreen'>
         <div className='leftSide'>
         {projects.map((project, index) => (
         <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
@@ -91,7 +101,9 @@ function ProjectDetailGeneral() {
         <h1 className='project-detail-title'>Enregistrement Cello</h1>
         <section className='project-detail-section'>
             <div className='tab-menu'>
-                <Tabmenu></Tabmenu>
+                <Tabmenu givePage={havePage}>
+                  
+                </Tabmenu>
             </div>
             <div className='edit-button'>
                 <Link to="/project-detail-general-update" className='editButton'><EditIcon className='editIcon'></EditIcon></Link>
