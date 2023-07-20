@@ -1,9 +1,10 @@
 .lightGreyContent{
     background-color: #F2F3F7;
-    height: 300px;
+    height: auto;
     width: 600px;
     border-radius: 10px;
     padding: 20px;
+    z-index: 1;
 }
 
 .addRushAccordion {

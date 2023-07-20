@@ -28,10 +28,24 @@ class SupabaseService {
         .upsert([{ id: 111, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
     }
 
+    async createRushVideo(videoData) {
+        return this.client.from("rush_video")
+          .insert(videoData)
+          .select();
+      }
+
+      async insertRushVideo(rushData) {
+        return this.client.from("videoEditing")
+          .insert(rushData)
+          .select();
+      }
+
     async getAllUsers() {
         return this.client.from("users")
         .select('*');
     }
+
+
     async getAllProjects() {
         return this.client.from("projets")
         .select('*');

@@ -1,10 +1,22 @@
 .grayBackground{
-    height: 470px;
+    height: 200px;
     width: 470px;
     background-color: #F2F3F7;
     position:absolute;
     left: 35%;
     padding: 20px;
+    z-index: 2;
+    border-radius: 15px;
+}
+
+.grayBackgroundSecond{
+    height: 270px;
+    width: 470px;
+    background-color: #F2F3F7;
+    position:absolute;
+    left: 35%;
+    padding: 20px;
+    z-index: 2;
 }
 
 .addFile{
@@ -33,18 +45,34 @@
    cursor: pointer;
 }
 
+.titreVideo{
+    padding-right: 94% !important;
+}
+
+.titreVideoInput{
+    position: relative;
+    right: 119px;
+    top: 9px;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 25px;
+    width: 200px;
+}
+
 .labelAddVideo {
-    padding-right: 72%;
+    padding-right: 72% !important;
 }
 
 .labelAddSound {
     padding-right: 62%;
+    position: relative;
+    top: -30px;
 }
 
 .submitButton {
     position: relative;
-    top: -80px;
-    left: 161px;
+    top: 55px;
+    left: 65px;
 }
 
 .addRush{
@@ -57,7 +85,40 @@
 
 .importVideo {
     position: relative;
-    right: 280px;
+    right: 183px;
     z-index: 1;
 }
 
+.urlVideo {
+    position: relative;
+    right: 60px;
+    top: 9px;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 25px;
+    width: 200px;
+}
+
+.addComment {
+    background-color:#F2F3F7;
+    height: 120px;
+    width: 500px;
+    margin-left: 50px;
+    border-radius: 15px;
+}
+
+.addCommentLabel {
+    position: relative;
+    top: 10px;
+    right: 140px;
+}
+
+.addCommentInput {
+    position: relative;
+    right: 0px;
+    top: 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 60px;
+    width: 460px;
+}
