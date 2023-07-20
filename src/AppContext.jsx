@@ -9,7 +9,9 @@ const AppProvider = ({ children }) => {
     // Logout from the connexion session 
   const handleLogout = () => {
     sessionStorage.clear();
-    setSessionData({}); 
+    localStorage.clear();
+    setSessionData({});
+    window.location.reload();
     navigate('/');
   };
 
