@@ -86,6 +86,8 @@ function ProjectSummary() {
   return (
 <div className='splitscreen'>
         <div className='leftSide'>
+          <h1>Projets</h1>
+          <h4>{projects.length} projets</h4>
         {projects.map((project, index) => (
         <ProjectCard key={index} title={project.title} status={project.status}/>
       ))}
