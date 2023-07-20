@@ -19,6 +19,7 @@ const Navbar = () => {
 
     return (
         <AppBar position="static" color="transparent" sx={{height:"100%", width:65}} className={styles.container}>
+
             <div className={styles.firstBlock}>
             <img src={salineLogo}/>
             <IconButton href='/homepage'>
