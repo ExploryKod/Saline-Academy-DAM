@@ -72,10 +72,9 @@ class SupabaseService {
             .select('*')
     }
 
-    async getUnvalidatedVideoEditing() {
-        return this.client.from("videoEditing")
-            .select('*')
-            .eq('isValidated', 'false')
+    async getAllVideoInformation() {
+        return this.client.from("chapter")
+            .select('*, projets!inner(*), videoEditing!inner(*)')
     }
 
     async getAllProjetUser(id) {

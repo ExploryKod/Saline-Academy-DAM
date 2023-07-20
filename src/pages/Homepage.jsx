@@ -20,17 +20,14 @@ const Homepage = (tokenId) => {
         setHasPriority(p.data.filter((p) => p.hasPriority === true))
     });
 
-    sbs.getUnvalidatedVideoEditing().then((p) => {
-        setVideoNotValidated(p.data)
-    })
-
     sbs.getCurrentUser(tokenId.tokenId).then((p) => {
         setCurrentUser(p.data)
     })
 
+    sbs.getAllVideoInformation().then((p) => {
+        setVideoNotValidated(p.data.filter((projet) => projet.videoEditing.isValidated === false))
+    })
   }, []);
-
-  const currentDate = new Date();
 
   const lastFinished = projets
     .slice() // Create a copy of the array to avoid modifying the original
@@ -76,10 +73,10 @@ const Homepage = (tokenId) => {
                         >
                             <Typography>Projet prioritaire</Typography>
                         </AccordionSummary>
-                        <AccordionDetails>
-                            {hasPriority.map((projet) => {
+                        <AccordionDetails >
+                            {hasPriority.map((projet) => (
                                 <ProjectCard title={projet?.title} state="État" status={projet?.status}/>
-                            })}
+                            ))}
                         </AccordionDetails>
                     </Accordion>
 
@@ -95,7 +92,7 @@ const Homepage = (tokenId) => {
                             <ProjectCard title="Nom du Projet" state="État" status="Status"/>
                         </AccordionDetails>
                     </Accordion>
-
+                    { currentUser && currentUser[0]?.role === "PRODUCTEUR" && (
                     <Accordion>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -105,10 +102,13 @@ const Homepage = (tokenId) => {
                             <Typography>Projet à valider</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <ProjectCard title="Nom du Projet" state="État" status="Status"/>
+                            {projets.filter((projet) => projet.status === "FINISHED").map((p) => (
+                                <ProjectCard title={p.title} state="État" status={p.status}/>
+                            ))}
                         </AccordionDetails>
                     </Accordion>
-
+                    )}
+                    { currentUser && currentUser[0]?.role === "PRODUCTEUR" && (
                     <Accordion>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -118,11 +118,14 @@ const Homepage = (tokenId) => {
                             <Typography>Vidéo à valider</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <ProjectCard title="Nom du Projet" state="État" status="Status"/>
+                            {videoNotValidated.map((p) => (
+                                <ProjectCard title={p.projets.title} status={p.status}/>
+                            ))}
                         </AccordionDetails>
                     </Accordion>
-
-                    <Accordion>
+                    )}
+                    { currentUser && currentUser[0]?.role === "MONTEUR" && (
+                        <Accordion>
                         <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -134,6 +137,8 @@ const Homepage = (tokenId) => {
                             <ProjectCard title="Nom du Projet" state="État" status="Status"/>
                         </AccordionDetails>
                     </Accordion>
+                    )}
+                    
                 </Container>
 
                 <Container className={styles.smallBlock}>
