@@ -22,6 +22,11 @@ class SupabaseService {
         .insert(projectData)
         .select();
     }
+    async insertDataPlannification(room, teacher, crew) {
+      return this.client
+        .from("projets")
+        .upsert([{ id: 111, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
+    }
 
     async getAllUsers() {
         return this.client.from("users")
@@ -31,11 +36,36 @@ class SupabaseService {
         return this.client.from("projets")
         .select('*');
     }
+    async getAllTeachers() {
+        return this.client.from("teacher")
+        .select('*');
+    }
+    async getAllRooms() {
+        return this.client.from("room")
+        .select('*');
+    }
+    async getAllCrews() {
+        return this.client.from("crew")
+        .select('*');
+    }
+    // async getTestBySlug(slug) {
+    //     return this.client.from("class")
+    //       .select('*')
+    //       .eq("slug", slug);
+    //   }
+    
+    //   async createTest(pageData) {
+    //     return this.client.from("class")
+    //       .insert(pageData)
+    //       .select();
+    //   }
+  
     async getProducterUsers() {
         return this.client.from("users")
         .select('*')
         .eq("role", "PRODUCTEUR");
     }
+
     
     async getVideoEditing() {
         return this.client.from("videoEditing")
