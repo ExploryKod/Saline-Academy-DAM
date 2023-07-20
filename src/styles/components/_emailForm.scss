@@ -1,0 +1,59 @@
+.email-modal-wrapper {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 1999;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    
+    &.email-modal-wrapper-open {
+        display: flex;
+    }
+}
+
+.email-modal {
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    align-items: center;
+    position: relative;
+
+    &.email-modal-open {
+        display: flex;
+    }
+
+    form.email-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+        label {
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: start;
+            align-items: end;
+            padding-bottom: 10px;
+            gap: 5px;
+        }
+
+        .email-textarea-wrapper {
+            max-height: 120px;
+        }
+    }
+}
+

@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import SupabaseService from "../tools/SupabaseClient";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Container, Fab, Grid, Typography } from "@mui/material";
+import { Box, Container, Fab, Grid, Typography } from "@mui/material";
 import ProjectCard from "../component/ProjectCard";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Navbar from "../component/Navbar";
 import styles from "./planningBoard.module.scss";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { EmailForm } from "../component/emailForm";
 
-
-
 const PlanningBoard = () => {
     const [projets, setProjets] = useState([]);
     const [ hasPriority, setHasPriority] = useState([])
-   
+    const [ manager, setManager] = useState("Jean Arduino");
+    const [ isModalOpen, setModalOpen] = useState(false);
   
     useEffect(() => {
       const sbs = new SupabaseService();
@@ -22,8 +20,11 @@ const PlanningBoard = () => {
           setProjets(p.data);
           setHasPriority(p.data.filter((p) => p.hasPriority === true))
       });
+      
+      const teacher = "Jeanne d'Arc";
+      setManager(teacher);
  
-    }, []);
+    }, [manager]);
   
   
     const projectsList = [
@@ -59,7 +60,7 @@ const PlanningBoard = () => {
       <div className={styles.globalContainer}>
           <Navbar />
 
-          <EmailForm />
+          <EmailForm manager={manager}/>
   
           <div className={styles.firstContainer}>
               <h1>Vos projets en cours</h1>

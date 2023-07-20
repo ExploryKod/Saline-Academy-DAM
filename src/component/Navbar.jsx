@@ -4,11 +4,7 @@ import { AppContext } from '../AppContext';
 import salineLogo from '../assets/saline_logo/logo_dark.svg'
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { AppBar, Fab, IconButton } from "@mui/material";
-import reactLogo from '../assets/react.svg'
-import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import SecurityIcon from '@mui/icons-material/Security';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import ManageHistoryRoundedIcon from '@mui/icons-material/ManageHistoryRounded';
 import AddIcon from '@mui/icons-material/Add';
