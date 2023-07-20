@@ -1,6 +1,7 @@
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import './Project-detail-general.css'
 import * as React from 'react';
+import { useEffect, useState } from 'react'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -25,10 +26,22 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import ProjectCard from './component/ProjectCard'
+import SupabaseService from "./tools/SupabaseClient";
+import Tabmenu from './component/Tabmenu';
 
 
 function ProjectDetailGeneral() {
-    
+
+    const [projects, setProjects] = useState([]);
+    const sbsProjects = new SupabaseService();
+
+    useEffect(() => {
+        sbsProjects.getAllProjects().then((p) => {
+            setProjects(p.data);
+        });
+      })
+
     const [description, setDescription] = React.useState('');
     const handleChange = (event) => {
     setDescription(event.target.value);
@@ -67,12 +80,18 @@ function ProjectDetailGeneral() {
   };
 
   return (
-    <>
-    <div className='project-detail-background'>
+    <><div className='splitscreen'>
+        <div className='leftSide'>
+        {projects.map((project, index) => (
+        <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
+      ))}
+        </div>    
+        <div className='rightSide'>
+   <div className='project-detail-background'>
         <h1 className='project-detail-title'>Enregistrement Cello</h1>
         <section className='project-detail-section'>
             <div className='tab-menu'>
-                tab-menu
+                <Tabmenu></Tabmenu>
             </div>
             <div className='edit-button'>
                 <Link to="/project-detail-general-update" className='editButton'><EditIcon className='editIcon'></EditIcon></Link>
@@ -186,6 +205,9 @@ function ProjectDetailGeneral() {
       </Dialog>
         </Stack>
         </div>
+    </div>
+        </div>
+     
     </div>
     </>
   )

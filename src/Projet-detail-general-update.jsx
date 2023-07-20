@@ -1,6 +1,7 @@
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import './Project-detail-general-update.css'
 import * as React from 'react';
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -18,6 +19,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
+import ProjectCard from './component/ProjectCard'
+import SupabaseService from "./tools/SupabaseClient";
+import Tabmenu from './component/Tabmenu';
+
 
 
 function ProjectDetailGeneralUpdate() {
@@ -25,6 +30,14 @@ function ProjectDetailGeneralUpdate() {
     const navigate = useNavigate();
     const [description, setDescription] = React.useState('');
     const [professor, setProfessor] = React.useState('');
+    const [projects, setProjects] = useState([]);
+    const sbsProjects = new SupabaseService();
+
+    useEffect(() => {
+        sbsProjects.getAllProjects().then((p) => {
+            setProjects(p.data);
+        });
+      })
 
     const handleChange = (event) => {
       setDescription(event.target.value);
@@ -47,15 +60,24 @@ function ProjectDetailGeneralUpdate() {
       setCancelOpen(false);
       setSaveOpen(false);
     };
+
+    const denisSeverinDescription = 'Denis Severin est un musicien de grande envergure qui a fait beaucoup de blah blah blah blah blah blah blah'
   
     return (
       <>
+      <div className='splitscreen'>
+        <div className='leftSide'>
+        {projects.map((project, index) => (
+        <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
+      ))}
+        </div>    
+        <div className='rightSide'></div>
       <div className='project-detail-background'>
           <h1 className='project-detail-title'>Enregistrement Cello</h1>
           <section className='project-detail-section'>
-              <div className='tab-menu'>
-                  tab-menu
-              </div>
+          <div className='tab-menu'>
+                <Tabmenu></Tabmenu>
+            </div>
               <div className='project-detail-section1-content'>
               <h2 className='project-detail-update-title'>Modifier les informations</h2>
                 <div className='select-flex'>
@@ -110,7 +132,7 @@ function ProjectDetailGeneralUpdate() {
                         label="Description"
                         onChange={handleChange}
                         >
-                        <MenuItem value={'Denis Severin'}>Denis Severin est un musicien de grande envergure qui a fait beaucoup de blah blah blah blah blah blah blah</MenuItem>
+                        <MenuItem value={'Denis Severin'}>{denisSeverinDescription}</MenuItem>
                         <MenuItem value={'Mathilda Catcher'}>Mathilda Catcher est une très belle violoniste d'origine portugaise qui blah blah blah blah blah blah</MenuItem>
                         <MenuItem value={'Louis Leland'}>Louis Leland est un pianiste agée mais toujours dans la recherche de nouveauté blah blah blah blah blah</MenuItem>
                         </Select>
@@ -167,6 +189,7 @@ function ProjectDetailGeneralUpdate() {
         </Dialog>
           </Stack>
           </div>
+      </div>
       </div>
       </>
     )
