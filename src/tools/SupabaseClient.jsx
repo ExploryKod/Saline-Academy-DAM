@@ -72,10 +72,9 @@ class SupabaseService {
             .select('*')
     }
 
-    async getUnvalidatedVideoEditing() {
-        return this.client.from("videoEditing")
-            .select('*')
-            .eq('isValidated', 'false')
+    async getAllVideoInformation() {
+        return this.client.from("chapter")
+            .select('*, projets!inner(*), videoEditing!inner(*)')
     }
 
     async getAllProjetUser(id) {
@@ -83,7 +82,18 @@ class SupabaseService {
             .select("*")
             .eq('user_id', id)
     }
-    
+
+    async saveTokenUser(token, id) {
+        return this.client.from("users")
+            .update({ token: token})
+            .eq('id', id)
+    }
+
+    async getCurrentUser(tokenId) {
+        return this.client.from("users")
+            .select('*')
+            .eq('token', tokenId)
+    }
 }
 
 export default SupabaseService;
