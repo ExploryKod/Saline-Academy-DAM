@@ -7,3 +7,9 @@
     display: flex;
     flex-direction: column;
 }
+
+.add {
+    height:50px;
+    width: auto;
+    background-color: black;
+}

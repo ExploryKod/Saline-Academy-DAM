@@ -59,15 +59,31 @@ class SupabaseService {
     //       .insert(pageData)
     //       .select();
     //   }
-    
-    
-    //   async modifytest(pageId, pageData) {
-    //     return this.client.from("class")
-    //       .update(pageData)
-    //       .eq("id", pageId)
-    //       .select();
-    //   }
+  
+    async getProducterUsers() {
+        return this.client.from("users")
+        .select('*')
+        .eq("role", "PRODUCTEUR");
+    }
 
+    
+    async getVideoEditing() {
+        return this.client.from("videoEditing")
+            .select('*')
+    }
+
+    async getUnvalidatedVideoEditing() {
+        return this.client.from("videoEditing")
+            .select('*')
+            .eq('isValidated', 'false')
+    }
+
+    async getAllProjetUser(id) {
+        return this.client.from("participants")
+            .select("*")
+            .eq('user_id', id)
+    }
+    
 }
 
 export default SupabaseService;
