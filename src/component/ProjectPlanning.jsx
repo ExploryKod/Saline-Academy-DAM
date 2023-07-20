@@ -94,7 +94,7 @@ function ProjectPlanning() {
                     <p className='project-detail-planning-group-form-label'>4. Validation et envoi de mail à l’équipe de réalisation</p>
 				  </div>
                   <div className="project-detail-planning-submit">
-                    <button className='project-detail-planning-submit__button' onClick={handleSubmit}>Enregistrer</button>
+                    <button className='project-detail-planning-submit__button' onClick={handleSubmit}>Valider la planification</button>
                   </div>
               </section>
             </div>
