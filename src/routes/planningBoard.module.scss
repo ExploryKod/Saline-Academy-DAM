@@ -28,3 +28,11 @@ body{
         font-weight: bold;
     }
 }
+
+.hasPriority {
+    border: 3px solid red;
+  }
+  
+.noPriority {
+    border: 3px solid orange;
+}

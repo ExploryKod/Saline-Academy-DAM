@@ -6,7 +6,7 @@ import Navbar from "../component/Navbar";
 import styles from "./planningBoard.module.scss";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { EmailForm } from "../component/emailForm";
-import { capitalizeFirstLetter, formatDate } from '../tools/stringTreatment';
+import { capitalizeFirstLetter, formatDate, calculateDelayFromToday } from '../tools/stringTreatment';
 
 const initialProjectPlanningData = {
   id: null,
@@ -21,6 +21,8 @@ const initialProjectPlanningData = {
   finished_at: null,
   user_id: null,
   crew_id: null,
+  delay: null,
+  hasPriority: false,
 };
 
 const PlanningBoard = () => {
@@ -36,7 +38,8 @@ const PlanningBoard = () => {
       try {
         const { data, error } = await sbs
           .from('projets')
-          .select('*');
+          .select('*, manager:user_id(email, firstname, lastname)')
+          .order('id');
   
         if (error) {
           // Handle the error
@@ -46,14 +49,18 @@ const PlanningBoard = () => {
   
         // If there is data, map over each row and update the projectPlanningData state
         if (data && data.length > 0) {
-          const mappedData = data.filter((projectData) => projectData.promised_date && projectData.title && projectData.status).map((projectData) => ({
+          const allDataFromProject = data
+          .filter((projectData) => projectData.promised_date && projectData.title && projectData.status && projectData.manager)
+          .map((projectData) => ({
             ...initialProjectPlanningData,
             ...projectData,
             title: capitalizeFirstLetter(projectData.title),
             status: capitalizeFirstLetter(projectData.status), 
             promised_date: formatDate(projectData.promised_date).toString(),
+            delay: calculateDelayFromToday(projectData.promised_date).toString(),
           }));
-          setProjectPlanningData(mappedData);
+         
+          setProjectPlanningData(allDataFromProject);
         }
       } catch (error) {
         console.error('Error fetching data:', error.message);
@@ -127,7 +134,7 @@ const PlanningBoard = () => {
                                 padding: 2,
                                 width: 263,
                                 height: 120,
-                                backgroundColor: 'var(--light-blue, white)',
+                                backgroundColor: 'white',
                                 border: '1px solid blue',
                                 borderRadius: 5,
                                 color: 'black',
@@ -148,7 +155,8 @@ const PlanningBoard = () => {
                   <div className={styles.columnPriority}>
                         <h2>Priorités</h2>
                       </div>
-                      {projectsList.map(project => (
+                      {projectPlanningData
+                        .map(project => (
                       <Box
                           sx={{
                               padding: 2,
@@ -166,15 +174,16 @@ const PlanningBoard = () => {
                                 width: 50,
                                 height: 50,
                                 backgroundColor: 'var(--light-blue, white)',
-                                border: '3px solid red',
                                 borderRadius: 25,
                                 color:'black',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'center',
                                 alignItems: 'center'
-                        }}>
-                            <p className="">{project.priority}</p>
+                        }}
+                        className={project.hasPriority ? styles.hasPriority : styles.noPriority}
+                        >
+                            <p className="">{project.hasPriority ? 'A' : 'B'}</p>
                         </Box>
                          
                       </Box>
@@ -184,15 +193,16 @@ const PlanningBoard = () => {
                       <div className={styles.columnTitles}>
                         <h2>Echéances</h2>
                       </div>
-                      {projectPlanningData
-                          .filter((project) => project.promised_date.toString() !== '01/01/1970' ? project.promised_date : 'Pas de date')
-                          .map(project => (
+                      {projectPlanningData.map(project => (
                       <Box
                           sx={{
                               width: 100,
-                              height: 50,
+                              height: 120,
                               backgroundColor: 'var(--light-blue, white)',
                               color:'black',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                           }}
                       >
                           <p className="">{project.promised_date}</p>
@@ -204,16 +214,19 @@ const PlanningBoard = () => {
                         <h2>Délai restant</h2>
                     </div>
                   
-                      {projectsList.map(project => (
+                    {projectPlanningData.map(project => (
                       <Box
                           sx={{
-                            width: 100,
-                            height: 50,
-                            backgroundColor: 'var(--light-blue, white)',
-                            color:'black',
+                              width: 100,
+                              height: 120,
+                              backgroundColor: 'var(--light-blue, white)',
+                              color:'black',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                           }}
                       >
-                          <p className="">{project.name}</p>
+                          <p className="">{project.delay} jours</p>
                       </Box>
                       ))}
                   </Container>
@@ -221,7 +234,8 @@ const PlanningBoard = () => {
                   <div className={styles.columnTitles}>
                         <h2>Responsable projet</h2>
                     </div>
-                      {projectsList.map(project => (
+                      {projectPlanningData
+                        .map(project => (
                       <Box
                           className={styles.projectCard}
                           sx={{
@@ -237,8 +251,8 @@ const PlanningBoard = () => {
                               justifyContent: 'center',
                           }}
                       >
-                          <p className="">{project.manager[0]}</p>
-                          <p className="">{project.manager[1]}</p>
+                          <p className="">{project.manager.firstname ? project.manager.firstname : "Aucune info"} {project.manager.lastname ? project.manager.lastname : "Aucune info"}</p>
+                          <p className="">{project.manager.email ? project.manager.email : "Aucun email fourni"}</p>
                       </Box>
                       ))}
                   </Container>
