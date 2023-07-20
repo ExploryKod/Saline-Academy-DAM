@@ -83,7 +83,12 @@ class SupabaseService {
             .select("*")
             .eq('user_id', id)
     }
-    
+
+    async saveTokenUser(token, id) {
+        return this.client.from("users")
+            .update(token)
+            .eq('id', id)
+    }
 }
 
 export default SupabaseService;

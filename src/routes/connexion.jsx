@@ -9,14 +9,20 @@ import zxcvbn from 'zxcvbn';
 import { AppContext } from '../AppContext';
 
 async function loginUser(credentials, id) {
-  return fetch(`http://localhost:5326/login/${id}`, {
+  const sbs = new SupabaseService();
+
+  const token = fetch(`http://localhost:5326/login/${id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(credentials)
   })
-    .then(data => data.json());
+    .then(data => data.json())
+
+  sbs.saveTokenUser(token, id);
+
+  return token
 }
 
 const Connexion = ({setToken}) => {

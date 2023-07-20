@@ -9,9 +9,10 @@ import useToken from './tools/useToken';
 import './styles/style.scss'
 import Homepage from "./pages/Homepage";
 
+
 const RoutesComponent = () => {
     const { token, setToken } = useToken();
-    
+
     return (
         <>
             {token ? (

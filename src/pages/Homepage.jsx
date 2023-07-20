@@ -6,8 +6,7 @@ import ProjectCard from "../component/ProjectCard";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Navbar from "../component/Navbar";
 
-const Homepage = (props) => {
-  const { sessionId } = props
+const Homepage = () => {
   const [projets, setProjets] = useState([]);
   const [ hasPriority, setHasPriority] = useState([])
   const [ videoNotValidated, setVideoNotValidated] = useState([])
@@ -26,7 +25,14 @@ const Homepage = (props) => {
 
   }, []);
 
-  console.log(videoNotValidated)
+  const currentDate = new Date();
+
+  const lastFinished = projets
+    .slice() // Create a copy of the array to avoid modifying the original
+    .filter(projet => projet?.status === 'FINISHED') // Filter projects with 'FINISHED' status
+    .sort((a, b) => new Date(b?.finished_date) - new Date(a.finished_date)) // Sort by finished_date in descending order
+    .find(() => true);
+
   const informationDashboard = [
     {
         number : projets.filter((p) => p.promised_date < new Date()).length,
@@ -66,6 +72,21 @@ const Homepage = (props) => {
                             <Typography>Projet prioritaire</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
+                            {hasPriority.map((projet) => {
+                                <ProjectCard title={projet?.title} state="État" status={projet?.status}/>
+                            })}
+                        </AccordionDetails>
+                    </Accordion>
+
+                    <Accordion>
+                        <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                        >
+                            <Typography>Mes projets</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <ProjectCard title="Nom du Projet" state="État" status="Status"/>
                         </AccordionDetails>
                     </Accordion>
@@ -102,19 +123,6 @@ const Homepage = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                         >
-                            <Typography>Projet à venir</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <ProjectCard title="Nom du Projet" state="État" status="Status"/>
-                        </AccordionDetails>
-                    </Accordion>
-
-                    <Accordion>
-                        <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        >
                             <Typography>Retour projet</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -126,7 +134,7 @@ const Homepage = (props) => {
                 <Container className={styles.smallBlock}>
                     <h2>Activité</h2>
                     <h3>Dernier projet rendu :</h3>
-                    <ProjectCard title="Nom du Projet" state="État" status="Status"/>
+                    <ProjectCard title={lastFinished?.title} state="En cours" status={lastFinished?.status}/>
                     <h3>Prochain projet à rendre :</h3>
                     <ProjectCard title="Nom du Projet" state="État" status="Status"/>
                 </Container>
