@@ -7,23 +7,62 @@ import styles from "./planningBoard.module.scss";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { EmailForm } from "../component/emailForm";
 
+const initialProjectPlanningData = {
+  project_id: null,
+  title: "",
+  description: "",
+  course: "",
+  manager: "",
+  status: "",
+  teacher_id: null,
+  room_id: null,
+  promise_date: null,
+  finished_at: null,
+  user_id: null,
+  crew_id: null,
+};
+
 const PlanningBoard = () => {
+    const sbs = new SupabaseService().client;
     const [projets, setProjets] = useState([]);
     const [ hasPriority, setHasPriority] = useState([])
     const [ manager, setManager] = useState("Jean Arduino");
     const [ isModalOpen, setModalOpen] = useState(false);
+
+    const [projectPlanningData, setProjectPlanningData] = useState([]);
+
+    const handleProjectData = async () => {
+      try {
+        const { data, error } = await sbs
+          .from('projets')
+          .select('*');
+  
+        if (error) {
+          // Handle the error
+          console.error(error);
+          return;
+        }
+  
+        // If there is data, map over each row and update the projectPlanningData state
+        if (data && data.length > 0) {
+          const mappedData = data.map((projectData) => ({
+            ...initialProjectPlanningData,
+            ...projectData,
+          }));
+          setProjectPlanningData(mappedData);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
   
     useEffect(() => {
-      const sbs = new SupabaseService();
+      handleProjectData();
+    }, []);
   
-      sbs.getAllProjects().then((p) => {
-          setProjets(p.data);
-          setHasPriority(p.data.filter((p) => p.hasPriority === true))
-      });
-      
+    useEffect(() => {
       const teacher = "Jeanne d'Arc";
       setManager(teacher);
- 
     }, [manager]);
   
   
@@ -54,13 +93,23 @@ const PlanningBoard = () => {
       },
     ]
 
-      
+      console.log('planning data', projectPlanningData);
   
     return (
       <div className={styles.globalContainer}>
           <Navbar />
 
-          <EmailForm manager={manager}/>
+          {/* <EmailForm manager={manager}/> */}
+
+        <div>
+        {projectPlanningData.map((projectData, index) => (
+        <div key={index}>
+          <h1>{projectData.title}</h1>
+          <p>{projectData.description}</p>
+          <hr/><br/>
+        </div>
+      ))}
+        </div>
   
           <div className={styles.firstContainer}>
               <h1>Vos projets en cours</h1>
@@ -75,9 +124,9 @@ const PlanningBoard = () => {
                   <div className={styles.columnTitles}>
                         <h2>Projets</h2>
                       </div>
-                      {projectsList.map(project => (
+                      {projectsList.map((project, index) => (
                       <Box
-                     
+                          key={index}
                           sx={{
                               padding: 2,
                               width: 263,
