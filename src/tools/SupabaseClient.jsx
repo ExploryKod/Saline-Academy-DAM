@@ -31,26 +31,24 @@ class SupabaseService {
         return this.client.from("projets")
         .select('*');
     }
-    // async getTestBySlug(slug) {
-    //     return this.client.from("class")
-    //       .select('*')
-    //       .eq("slug", slug);
-    //   }
     
-    //   async createTest(pageData) {
-    //     return this.client.from("class")
-    //       .insert(pageData)
-    //       .select();
-    //   }
-    
-    
-    //   async modifytest(pageId, pageData) {
-    //     return this.client.from("class")
-    //       .update(pageData)
-    //       .eq("id", pageId)
-    //       .select();
-    //   }
+    async getVideoEditing() {
+        return this.client.from("videoEditing")
+            .select('*')
+    }
 
+    async getUnvalidatedVideoEditing() {
+        return this.client.from("videoEditing")
+            .select('*')
+            .eq('isValidated', 'false')
+    }
+
+    async getAllProjetUser(id) {
+        return this.client.from("participants")
+            .select("*")
+            .eq('user_id', id)
+    }
+    
 }
 
 export default SupabaseService;
