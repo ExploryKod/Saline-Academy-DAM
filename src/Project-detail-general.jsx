@@ -35,7 +35,7 @@ function ProjectDetailGeneral() {
 
     const [projects, setProjects] = useState([]);
     const sbsProjects = new SupabaseService();
-    const [page, setPage] = React.useState("")
+    const [page, setPage] = React.useState("one")
 
     const havePage = (page) => {
       setPage(page);
@@ -86,11 +86,7 @@ function ProjectDetailGeneral() {
 
   return (
     <>
-    {page === "one" && <div>one</div>}
-    {page === "two" && <div>two</div>}
-    {page === "three" && <div>three</div>}
-    {page === "four" && <div>four</div>}
-    <div className='splitscreen'>
+    {page === "one" &&     <div className='splitscreen'>
         <div className='leftSide'>
         {projects.map((project, index) => (
         <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
@@ -220,7 +216,10 @@ function ProjectDetailGeneral() {
     </div>
         </div>
      
-    </div>
+    </div>}
+    {page === "two" && <div>two</div>}
+    {page === "three" && <div>three</div>}
+    {page === "four" && <div>four</div>}
     </>
   )
 }
