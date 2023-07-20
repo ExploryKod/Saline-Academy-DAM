@@ -10,6 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import SecurityIcon from '@mui/icons-material/Security';
 import EngineeringIcon from '@mui/icons-material/Engineering';
+import ManageHistoryRoundedIcon from '@mui/icons-material/ManageHistoryRounded';
 import AddIcon from '@mui/icons-material/Add';
 import styles from "./Navbar.module.scss"
 
@@ -31,8 +32,8 @@ const Navbar = () => {
             <IconButton href='/projet'>
             <DateRangeIcon fontSize="large"/>
             </IconButton>
-            <IconButton href='/aucuneIdee'>
-            <SecurityIcon fontSize="large"/>
+            <IconButton href='/planning'>
+            <ManageHistoryRoundedIcon fontSize="large"/>
             </IconButton>
             <IconButton href='/param'>
             <EngineeringIcon fontSize="large"/>

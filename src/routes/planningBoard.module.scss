@@ -1,0 +1,30 @@
+body{
+    background-color: #F2F3F7;
+}
+
+.globalContainer{
+    display: flex;
+}
+
+.firstContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+
+.columnTitles {
+    min-width: 200px;
+    h2 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    
+}
+
+.columnPriority {
+    min-width: 100px;
+    h2 {
+        font-size: 18px;
+        font-weight: bold;
+    }
+}
