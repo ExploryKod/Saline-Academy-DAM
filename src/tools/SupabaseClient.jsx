@@ -25,7 +25,7 @@ class SupabaseService {
     async insertDataPlannification(room, teacher, crew) {
       return this.client
         .from("projets")
-        .upsert([{ id: 113, room_id: room, teacher_id: teacher, crew_id: crew }], { onConflict: 'id' });
+        .upsert([{ id: 111, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
     }
 
     async getAllUsers() {
