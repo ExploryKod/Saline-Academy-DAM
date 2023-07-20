@@ -9,15 +9,16 @@ import useToken from './tools/useToken';
 import './styles/style.scss'
 import Homepage from "./pages/Homepage";
 
+
 const RoutesComponent = () => {
     const { token, setToken } = useToken();
-    
+
     return (
         <>
             {token ? (
             <Routes>
                 <Route path="/" element={<Navigate to="/homepage" replace />} />
-                <Route path="/homepage" element={<Homepage />} />
+                <Route path="/homepage" element={<Homepage tokenId={token} />} />
                 <Route path="/create" element={<CreateProject />} />
                 <Route path="/project-detail-general" element={<ProjectDetailGeneral/>} />
                 <Route path="/project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />
