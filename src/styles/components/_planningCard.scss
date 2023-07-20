@@ -1,0 +1,57 @@
+
+.s-project-card-container {
+    .project-card {
+        height: 100px;
+        width: 100%;
+        border-radius: 10px;
+        background-color: $lightLavender;
+        display: flex;
+        align-items: center;
+        border: 2px solid $darkpink;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+
+        .project-card-infos-state {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .project-card-infos__title {
+            font-weight: bold;
+            color: black;
+            font-size: 16px;
+        }
+
+      
+        
+        .project-card-infos-state__status{
+            color: black;
+            font-weight: normal;
+            font-size: 12px;
+        }
+        
+
+        &:hover {
+            background-color: $darkpink;
+           
+            .project-card-infos__title {
+                color: $lightLavender;
+            }
+
+            .project-card-infos-state__status{
+                color: $lightLavender;
+            }
+
+            .project-card-infos-state{
+                img {
+                    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+                }
+            }
+        }
+    }
+    
+ 
+    
+ 
+}

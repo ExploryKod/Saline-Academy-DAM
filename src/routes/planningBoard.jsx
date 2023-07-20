@@ -23,6 +23,7 @@ const initialProjectPlanningData = {
   crew_id: null,
   delay: null,
   hasPriority: false,
+  state: null,
 };
 
 const PlanningBoard = () => {
@@ -122,7 +123,7 @@ const PlanningBoard = () => {
   
               <Container sx={{display:'flex', gap:2 ,padding:2, backgroundColor:'white', borderRadius:2}}>
                   <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
-                  <div className={styles.columnTitles}>
+                  <div className={`${styles.columnTitles} s-project-card-container`}>
                         <h2>Projets</h2>
                       </div>
                       {projectPlanningData
@@ -131,21 +132,19 @@ const PlanningBoard = () => {
                             <Box
                               key={index}
                               sx={{
-                                padding: 2,
-                                width: 263,
+                                padding: 0,
+                                width: 300,
                                 height: 120,
-                                backgroundColor: 'white',
-                                border: '1px solid blue',
-                                borderRadius: 5,
-                                color: 'black',
+                                backgroundColor: 'transparent',
+                                border: 'none',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                justifyContent: 'center',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
                               }}
+                              className="s-project-card-container"
                             >
-
-                              <h3>{project.title}</h3>
-                              <p>{project.status}</p>
+                              <ProjectCard title={project.title} state={project.state ? project.state : ""} status={project.status}/>
                             </Box>
                           ))}
 
