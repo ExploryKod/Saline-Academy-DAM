@@ -21,6 +21,8 @@ import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
 import ProjectCard from './component/ProjectCard'
 import SupabaseService from "./tools/SupabaseClient";
+import Tabmenu from './component/Tabmenu';
+
 
 
 function ProjectDetailGeneralUpdate() {
@@ -58,6 +60,8 @@ function ProjectDetailGeneralUpdate() {
       setCancelOpen(false);
       setSaveOpen(false);
     };
+
+    const denisSeverinDescription = 'Denis Severin est un musicien de grande envergure qui a fait beaucoup de blah blah blah blah blah blah blah'
   
     return (
       <>
@@ -71,9 +75,9 @@ function ProjectDetailGeneralUpdate() {
       <div className='project-detail-background'>
           <h1 className='project-detail-title'>Enregistrement Cello</h1>
           <section className='project-detail-section'>
-              <div className='tab-menu'>
-                  tab-menu
-              </div>
+          <div className='tab-menu'>
+                <Tabmenu></Tabmenu>
+            </div>
               <div className='project-detail-section1-content'>
               <h2 className='project-detail-update-title'>Modifier les informations</h2>
                 <div className='select-flex'>
@@ -128,7 +132,7 @@ function ProjectDetailGeneralUpdate() {
                         label="Description"
                         onChange={handleChange}
                         >
-                        <MenuItem value={'Denis Severin'}>Denis Severin est un musicien de grande envergure qui a fait beaucoup de blah blah blah blah blah blah blah</MenuItem>
+                        <MenuItem value={'Denis Severin'}>{denisSeverinDescription}</MenuItem>
                         <MenuItem value={'Mathilda Catcher'}>Mathilda Catcher est une très belle violoniste d'origine portugaise qui blah blah blah blah blah blah</MenuItem>
                         <MenuItem value={'Louis Leland'}>Louis Leland est un pianiste agée mais toujours dans la recherche de nouveauté blah blah blah blah blah</MenuItem>
                         </Select>

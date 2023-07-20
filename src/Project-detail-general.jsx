@@ -28,6 +28,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import ProjectCard from './component/ProjectCard'
 import SupabaseService from "./tools/SupabaseClient";
+import Tabmenu from './component/Tabmenu';
 
 
 function ProjectDetailGeneral() {
@@ -90,7 +91,7 @@ function ProjectDetailGeneral() {
         <h1 className='project-detail-title'>Enregistrement Cello</h1>
         <section className='project-detail-section'>
             <div className='tab-menu'>
-                tab-menu
+                <Tabmenu></Tabmenu>
             </div>
             <div className='edit-button'>
                 <Link to="/project-detail-general-update" className='editButton'><EditIcon className='editIcon'></EditIcon></Link>

@@ -12,8 +12,10 @@
 }
 
 .tab-menu {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
-    margin-bottom: 50px;
+    margin-bottom: 24px;
 }
 
 .edit-button {
