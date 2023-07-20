@@ -48,25 +48,6 @@ const Connexion = ({setToken}) => {
   const handleToggle = () => {
     setToggle(!toggle);
   };
-
-  // Faire persister la data même si je change de tab en combinaison avec context AP
-  useEffect(() => {
-    const storedSessionData = localStorage.getItem('sessionData');
-    if (storedSessionData) {
-      setSessionData(JSON.parse(storedSessionData));
-    }
-  }, [setSessionData]);
-
-  
-  useEffect(() => {
-    localStorage.setItem('sessionData', JSON.stringify(sessionData));
-  }, [sessionData]);
-
-  useEffect(() => {
-    if (sessionData.session_id) {
-      navigate('/homepage');
-    }
-  }, [sessionData]);
   
   const checkPasswordStrength = (password) => {
     const result = zxcvbn(password);
