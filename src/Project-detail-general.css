@@ -108,3 +108,9 @@
 body {
     min-height: 0;
 }
+
+.project-detail-planning-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #263069;
+}

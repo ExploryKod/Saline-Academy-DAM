@@ -34,7 +34,7 @@ import Tabmenu from './component/TabMenu';
 function ProjectDetailGeneral() {
 
     const [projects, setProjects] = useState([]);
-    const sbsProjects = new SupabaseService();
+    const sbs = new SupabaseService();
     const [page, setPage] = React.useState("one")
 
     const havePage = (page) => {
@@ -42,7 +42,7 @@ function ProjectDetailGeneral() {
     };
 
     useEffect(() => {
-        sbsProjects.getAllProjects().then((p) => {
+        sbs.getAllProjects().then((p) => {
             setProjects(p.data);
         });
       })
@@ -216,8 +216,8 @@ function ProjectDetailGeneral() {
     </div>
         </div>
      
-    </div>}
-    {page === "two" && <div>two</div>}
+    </div>
+    }
     {page === "three" && <div>three</div>}
     {page === "four" && <div>four</div>}
     </>
