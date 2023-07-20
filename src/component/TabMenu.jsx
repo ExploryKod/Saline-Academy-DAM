@@ -7,6 +7,23 @@ import Box from '@mui/material/Box';
 function Tabmenu () {
 	const [value, setValue] = React.useState('one');
 
+	const pageChange = () => {
+		if (value === "one") {
+			return "Summary"
+		}
+		if (value === "two") {
+			return "Document"
+		}
+		
+		if (value === "three") {
+			return "Rush"
+		}
+		if (value === "four") {
+			return "Planning"
+		}
+		console.log(value);
+	}
+
 	const handleChange = (event, newValue) => {
 	  setValue(newValue);
 	};
@@ -16,6 +33,7 @@ function Tabmenu () {
 		<div className='tabMenu'>
 		<Box sx={{ width: '100%' }}>
 		<Tabs
+		  onClick={pageChange}
 		  value={value}
 		  onChange={handleChange}
 		  textColor="secondary"
