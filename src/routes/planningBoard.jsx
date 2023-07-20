@@ -8,6 +8,7 @@ import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { EmailForm } from "../component/emailForm";
 import { capitalizeFirstLetter, formatDate, calculateDelayFromToday } from '../tools/stringTreatment';
 
+// Objet de base qui regroupe toutes les données pour le board
 const initialProjectPlanningData = {
   id: null,
   title: "",
@@ -28,11 +29,7 @@ const initialProjectPlanningData = {
 
 const PlanningBoard = () => {
     const sbs = new SupabaseService().client;
-    const [projets, setProjets] = useState([]);
-    const [ hasPriority, setHasPriority] = useState([])
-    const [ manager, setManager] = useState("Jean Arduino");
-    const [ isModalOpen, setModalOpen] = useState(false);
-
+  
     const [projectPlanningData, setProjectPlanningData] = useState([]);
 
     const handleProjectData = async () => {
@@ -43,12 +40,10 @@ const PlanningBoard = () => {
           .order('id');
   
         if (error) {
-          // Handle the error
           console.error(error);
           return;
         }
   
-        // If there is data, map over each row and update the projectPlanningData state
         if (data && data.length > 0) {
           const allDataFromProject = data
           .filter((projectData) => projectData.promised_date && projectData.title && projectData.status && projectData.manager)
@@ -72,46 +67,14 @@ const PlanningBoard = () => {
       handleProjectData();
     }, []);
   
-    useEffect(() => {
-      const teacher = "Jeanne d'Arc";
-      setManager(teacher);
-    }, [manager]);
-  
-  
-    const projectsList = [
-      {
-          name : "Projet X",
-          status : "En cours de validation",
-          priority: "A",
-          manager: ["Jean", "jean@gmail.com"],
-      },
-      {
-        name : "Projet X",
-        status : "En cours de validation",
-        priority: "A",
-        manager: ["Jean", "jean@gmail.com"],
-      },
-      {
-        name : "Projet X",
-        status : "En cours de validation",
-        priority: "A",
-        manager: ["Jean", "jean@gmail.com"],
-      },
-      {
-        name : "Projet X",
-        status : "En cours de validation",
-        priority: "A",
-        manager: ["Jean", "jean@gmail.com"],
-      },
-    ]
 
-      console.log('planning data', projectPlanningData);
+    console.log('planning data', projectPlanningData);
   
     return (
       <div className={styles.globalContainer}>
           <Navbar />
 
-          <EmailForm manager={manager}/>
+         
 
           <div className={styles.firstContainer}>
               <h1>Vos projets en cours</h1>
@@ -142,7 +105,7 @@ const PlanningBoard = () => {
                                 justifyContent: 'flex-start',
                                 alignItems: 'flex-start',
                               }}
-                              className="s-project-card-container"
+                              className={`${styles.projectCard} s-project-card-container`}
                             >
                               <ProjectCard title={project.title} state={project.state ? project.state : ""} status={project.status}/>
                             </Box>
@@ -155,8 +118,9 @@ const PlanningBoard = () => {
                         <h2>Priorités</h2>
                       </div>
                       {projectPlanningData
-                        .map(project => (
+                        .map((project, index) => (
                       <Box
+                          key={index}
                           sx={{
                               padding: 2,
                               width: 50,
@@ -166,6 +130,7 @@ const PlanningBoard = () => {
                               flexDirection: 'column',
                               justifyContent: 'center',
                           }}
+                          className={`${styles.projectCard}`}
                       >
                         <Box sx={{
                                 padding: 0,
@@ -192,8 +157,11 @@ const PlanningBoard = () => {
                       <div className={styles.columnTitles}>
                         <h2>Echéances</h2>
                       </div>
-                      {projectPlanningData.map(project => (
+                    
+                      {projectPlanningData.map((project, index) => (
                       <Box
+                    
+                      key={index}
                           sx={{
                               width: 100,
                               height: 120,
@@ -203,6 +171,7 @@ const PlanningBoard = () => {
                               alignItems: 'center',
                               justifyContent: 'center',
                           }}
+                          className={`${styles.projectCard}`}
                       >
                           <p className="">{project.promised_date}</p>
                       </Box>
@@ -213,8 +182,9 @@ const PlanningBoard = () => {
                         <h2>Délai restant</h2>
                     </div>
                   
-                    {projectPlanningData.map(project => (
+                    {projectPlanningData.map((project, index) => (
                       <Box
+                      key={index}
                           sx={{
                               width: 100,
                               height: 120,
@@ -224,6 +194,7 @@ const PlanningBoard = () => {
                               alignItems: 'center',
                               justifyContent: 'center',
                           }}
+                          className={`${styles.projectCard}`}
                       >
                           <p className="">{project.delay} jours</p>
                       </Box>
@@ -234,9 +205,9 @@ const PlanningBoard = () => {
                         <h2>Responsable projet</h2>
                     </div>
                       {projectPlanningData
-                        .map(project => (
+                        .map((project, index) => (
                       <Box
-                          className={styles.projectCard}
+                      key={index}
                           sx={{
                               padding: 2,
                               width: 200,
@@ -249,9 +220,11 @@ const PlanningBoard = () => {
                               flexDirection: 'column',
                               justifyContent: 'center',
                           }}
+                          className={`${styles.projectCard}`}
                       >
                           <p className="">{project.manager.firstname ? project.manager.firstname : "Aucune info"} {project.manager.lastname ? project.manager.lastname : "Aucune info"}</p>
                           <p className="">{project.manager.email ? project.manager.email : "Aucun email fourni"}</p>
+                          <EmailForm manager={project.manager}/>
                       </Box>
                       ))}
                   </Container>
