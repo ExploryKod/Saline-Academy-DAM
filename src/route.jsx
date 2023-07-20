@@ -8,7 +8,6 @@ import ProjectDetailGeneralUpdate from "./Projet-detail-general-update";
 import useToken from './tools/useToken';
 import './styles/style.scss'
 import Homepage from "./pages/Homepage";
-import App from "./App";
 
 const RoutesComponent = () => {
     const { token, setToken } = useToken();
@@ -19,7 +18,6 @@ const RoutesComponent = () => {
             <Routes>
                 <Route path="/" element={<Navigate to="/homepage" replace />} />
                 <Route path="/homepage" element={<Homepage />} />
-                <Route path="/test" element={<App/>} />
                 <Route path="/create" element={<CreateProject />} />
                 <Route path="/project-detail-general" element={<ProjectDetailGeneral/>} />
                 <Route path="/project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />
