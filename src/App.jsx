@@ -11,7 +11,6 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [count, setCount] = useState(0)
 
-    const { sessionData, setSessionData } = useContext(AppContext);
     const { handleLogout } = useContext(AppContext);
 
     const disconnectUser = () => {

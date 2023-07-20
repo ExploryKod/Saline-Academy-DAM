@@ -12,7 +12,7 @@ const AppProvider = ({ children }) => {
     localStorage.clear();
     setSessionData({});
     window.location.reload();
-    navigate('/');
+    navigate('/connexion');
   };
 
 
