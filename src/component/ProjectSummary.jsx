@@ -87,7 +87,7 @@ function ProjectSummary() {
 <div className='splitscreen'>
         <div className='leftSide'>
         {projects.map((project, index) => (
-        <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
+        <ProjectCard key={index} title={project.title} status={project.status}/>
       ))}
         </div>    
         <div className='rightSide'>
