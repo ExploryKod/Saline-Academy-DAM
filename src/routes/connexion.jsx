@@ -36,8 +36,7 @@ const Connexion = ({setToken}) => {
     password: '',
     langue: '',
     role: 'user',
-    email: '',
-    token: ''
+    email: ''
   });
 
   const [loginData, setLoginData] = useState({
