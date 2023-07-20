@@ -6,10 +6,16 @@
 }
 
 .project-detail-title {
+    margin-bottom: 12px;
     margin-top: 16px;
     margin-right: 20px;
     background-color:  #F2F3F7;
     color: black;
+}
+
+
+h3 {
+    font-style: bold;
 }
 
 .tab-menu {
@@ -110,7 +116,7 @@
 
 .leftSide {
     padding-left: 10px;
-    margin-top: 105px;
+    margin-top: 55px;
     width:50%;
 }
 
