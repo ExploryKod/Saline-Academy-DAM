@@ -8,8 +8,18 @@ import { useNavigate } from 'react-router-dom';
 import zxcvbn from 'zxcvbn';
 import { AppContext } from '../AppContext';
 
+async function loginUser(credentials, id) {
+  return fetch(`http://localhost:5326/login/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json());
+}
 
-const Connexion = () => {
+const Connexion = ({setToken}) => {
   const [toggle, setToggle] = useState(false);
   const [flashMessage, setFlashMessage] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -17,6 +27,8 @@ const Connexion = () => {
   const { sessionData, setSessionData } = useContext(AppContext); 
   const supabaseService = new SupabaseService();
   const navigate = useNavigate();
+
+
 
   const [registerData, setRegisterData] = useState({
     firstname: '',
@@ -36,25 +48,6 @@ const Connexion = () => {
   const handleToggle = () => {
     setToggle(!toggle);
   };
-
-  // Faire persister la data même si je change de tab en combinaison avec context AP
-  useEffect(() => {
-    const storedSessionData = localStorage.getItem('sessionData');
-    if (storedSessionData) {
-      setSessionData(JSON.parse(storedSessionData));
-    }
-  }, [setSessionData]);
-
-  
-  useEffect(() => {
-    localStorage.setItem('sessionData', JSON.stringify(sessionData));
-  }, [sessionData]);
-
-  useEffect(() => {
-    if (sessionData.session_id) {
-      navigate('/homepage');
-    }
-  }, [sessionData]);
   
   const checkPasswordStrength = (password) => {
     const result = zxcvbn(password);
@@ -135,9 +128,14 @@ const handleRegisterSubmit = async (e) => {
           const isPasswordMatch = await bcrypt.compare(password, hashPassword);
           if (isPasswordMatch) {
             
-           
             // Mise en place de la session utilisateur
-            setSessionData({ session_id: data[0].id, session_email: data[0].email });
+            const idToken = data[0].id;
+            idToken.toString();
+            const token = await loginUser({
+              email,
+              password
+            }, data[0].id);
+            setToken(token);
             navigate("/homepage");
           } else {
             setFlashMessage('Mot de passe incorrect');
