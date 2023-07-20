@@ -35,7 +35,7 @@ const Connexion = ({setToken}) => {
     lastname: '',
     password: '',
     langue: '',
-    role: 'user',
+    role: '',
     email: ''
   });
 
@@ -171,7 +171,7 @@ const handleRegisterSubmit = async (e) => {
 
 
   console.log('session', sessionData);
-  console.log('pasword strength', passwordStrength);
+  console.log('password strength', passwordStrength);
   console.log('loading', loading);
 
   return (
@@ -204,6 +204,19 @@ const handleRegisterSubmit = async (e) => {
                         {passwordStrength > 0 && (
                             <PasswordStrengthIndicator strength={passwordStrength} />
                         )}
+
+                        <div className="form-elem">
+                            <label htmlFor="role">Sélectionnez un rôle:</label>
+                            <select name="role" id="role" onChange={handleRegisterChange} value={registerData.role}>
+                              <option value="USER">Utilisateur</option>
+                              <option value="PRODUCTEUR">Producteur</option>
+                              <option value="COPRODUCTEUR">Co-producteur</option>
+                              <option value="REDACTEUR">Rédacteur</option>
+                              <option value="REALISATEUR">Réalisateur</option>
+                              <option value="MONTEUR">Réalisateur</option>
+                              <option value="MARKETING">Réalisateur</option>
+                            </select>
+                        </div>
 
                         <div className="form-elem">
                           <button className="btn-1" type="submit">Créer son compte</button>
