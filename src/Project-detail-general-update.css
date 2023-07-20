@@ -15,6 +15,7 @@
 
 
 h3 {
+    padding-top: 15px;
     font-style: bold;
 }
 
@@ -115,6 +116,8 @@ h3 {
 }
 
 .leftSide {
+    max-height: 650px;
+    overflow-y: scroll;
     padding-left: 10px;
     margin-top: 55px;
     width:50%;

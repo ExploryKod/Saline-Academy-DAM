@@ -10,7 +10,7 @@ function ProjectDetailGeneral() {
 
     const [projects, setProjects] = useState([]);
     const sbsProjects = new SupabaseService();
-    const [page, setPage] = React.useState("one")
+    const [page, setPage] = useState("one")
 
     const havePage = (page) => {
       setPage(page);
