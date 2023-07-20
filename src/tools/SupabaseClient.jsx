@@ -31,6 +31,11 @@ class SupabaseService {
         return this.client.from("projets")
         .select('*');
     }
+    async getProducterUsers() {
+        return this.client.from("users")
+        .select('*')
+        .eq("role", "PRODUCTEUR");
+    }
     
     async getVideoEditing() {
         return this.client.from("videoEditing")
