@@ -4,8 +4,25 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-function Tabmenu () {
+function TabMenu ({ givePage }) {
 	const [value, setValue] = React.useState('one');
+
+
+	const pageChange = () => {
+		if (value === "one") {
+			return givePage(value)
+		}
+		if (value === "two") {
+			return givePage(value)
+		}
+		
+		if (value === "three") {
+			return givePage(value)
+		}
+		if (value === "four") {
+			return givePage(value)
+		}
+	}
 
 	const handleChange = (event, newValue) => {
 	  setValue(newValue);
@@ -16,6 +33,7 @@ function Tabmenu () {
 		<div className='tabMenu'>
 		<Box sx={{ width: '100%' }}>
 		<Tabs
+		  onClick={pageChange}
 		  value={value}
 		  onChange={handleChange}
 		  textColor="secondary"
@@ -33,4 +51,4 @@ function Tabmenu () {
 	);
   };
 
-export default Tabmenu
+export default TabMenu
