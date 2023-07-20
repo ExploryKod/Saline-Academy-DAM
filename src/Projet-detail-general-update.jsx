@@ -21,7 +21,6 @@ import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
 import ProjectCard from './component/ProjectCard'
 import SupabaseService from "./tools/SupabaseClient";
-import Tabmenu from './component/Tabmenu';
 
 
 
@@ -73,13 +72,10 @@ function ProjectDetailGeneralUpdate() {
         </div>    
         <div className='rightSide'></div>
       <div className='project-detail-background'>
-          <h1 className='project-detail-title'>Enregistrement Cello</h1>
+          <h2 className='project-detail-title'>Enregistrement Cello</h2>
           <section className='project-detail-section'>
-          <div className='tab-menu'>
-                <Tabmenu></Tabmenu>
-            </div>
               <div className='project-detail-section1-content'>
-              <h2 className='project-detail-update-title'>Modifier les informations</h2>
+              <h3 className='project-detail-update-title'>Modifier les informations</h3>
                 <div className='select-flex'>
                 <span className='select-span'>Professeur :</span>
                     <Box sx={{ minWidth: 120 }}>
