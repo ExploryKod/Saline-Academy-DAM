@@ -111,7 +111,7 @@ const PlanningBoard = () => {
       <div className={styles.globalContainer}>
           <Navbar />
 
-          {/* <EmailForm manager={manager}/> */}
+          <EmailForm manager={manager}/>
 
           <div className={styles.firstContainer}>
               <h1>Vos projets en cours</h1>
@@ -121,8 +121,8 @@ const PlanningBoard = () => {
                 Mes Filtres
             </Fab>
   
-              <Container sx={{display:'flex', gap:2 ,padding:2, backgroundColor:'white', borderRadius:2}}>
-                  <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+              <Container sx={{display:'flex', gap:2 ,padding:2, backgroundColor:'white', borderRadius:2}} className="s-planning-board">
+                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'black', borderRight: 5, borderRadius:0}}>
                   <div className={`${styles.columnTitles} s-project-card-container`}>
                         <h2>Projets</h2>
                       </div>
@@ -150,7 +150,7 @@ const PlanningBoard = () => {
 
                     
                   </Container>
-                  <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                   <div className={styles.columnPriority}>
                         <h2>Priorités</h2>
                       </div>
@@ -188,7 +188,7 @@ const PlanningBoard = () => {
                       </Box>
                       ))}
                   </Container>
-                  <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                       <div className={styles.columnTitles}>
                         <h2>Echéances</h2>
                       </div>
@@ -208,7 +208,7 @@ const PlanningBoard = () => {
                       </Box>
                       ))}
                   </Container>
-                  <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                     <div className={styles.columnTitles}>
                         <h2>Délai restant</h2>
                     </div>
@@ -229,7 +229,7 @@ const PlanningBoard = () => {
                       </Box>
                       ))}
                   </Container>
-                  <Container sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                   <div className={styles.columnTitles}>
                         <h2>Responsable projet</h2>
                     </div>

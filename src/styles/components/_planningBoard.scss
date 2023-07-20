@@ -1,0 +1,10 @@
+.s-planning-board {
+    max-width: 90vw;
+    max-height: 80vh;
+    @include scrollbar($vertical_overflow: auto);
+
+    .s-planning-cols {
+        height: 100%;
+        border: 0;
+    }
+}
