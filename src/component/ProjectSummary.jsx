@@ -94,15 +94,15 @@ function ProjectSummary() {
         </div>    
         <div className='rightSide'>
    <div className='project-detail-background'>
-        <h2 className='project-detail-title'>Enregistrement Cello</h2>
+        <h2 className='project-detail-title'>Projet interview</h2>
         <section className='project-detail-section'>
             <div className='edit-button'>
                 <Link to="/project-detail-general-update" className='editButton'><EditIcon className='editIcon'></EditIcon></Link>
             </div>
             <div className='project-detail-section1-content'>
-                <span>Professeur : Denis Severin</span>
+                <span>Professeur : Mathilda Catcher</span>
                 <br></br>
-                <span className='project-detail-instrument'>Instrument : Cello</span>
+                <span className='project-detail-instrument'>Spécialisation : Chant</span>
                 <div className='project-detail-description-section'>
                      <EmojiEventsIcon className='trophyIcon'></EmojiEventsIcon>
                      <Accordion>

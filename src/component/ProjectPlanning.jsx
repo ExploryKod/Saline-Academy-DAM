@@ -18,6 +18,7 @@ function ProjectPlanning() {
 
     const handleTeachers = () => {
       sbs.getAllTeachers().then((p) => {
+        console.log(p)
           setTeachers(p.data);
       });}
 

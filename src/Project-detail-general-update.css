@@ -1,10 +1,3 @@
-.project-detail-background {
-    width: 800px;
-    max-width: 800px;
-    padding-right: 28px;
-    padding-left: 14px;
-}
-
 .project-detail-title {
     margin-bottom: 12px;
     margin-top: 16px;
@@ -13,115 +6,10 @@
     color: black;
 }
 
-
-h3 {
-    padding-top: 15px;
-    font-style: bold;
-}
-
-.tab-menu {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 24px;
-}
-
-.edit-button {
-    padding: 10px 0;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.project-detail-instrument {
-    color: darkgray;
-}
-
-.project-detail-section {
-    width:746px;
-    padding-left: 24px;
-    padding-right: 24px;
-    background-color: white;
-    border: 1px;
-    border-radius: 5px;
-}
-
-.project-detail-section2-content {
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.project-detail-section1-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.instrument {
-    color: black;
-}
-
-.project-detail-description-section {
-    display: flex;
-    align-items: center;    margin-top: 32px;
-    margin-bottom: 64px;
-    max-width: 700px;
-}
-
-.editIcon {
-    width: 32px;
-    height: 32px;
-}
-
-.trophyIcon {
-    margin-right: 16px;
-}
-
-.division {
-    min-height: 10px;
-    width: 720px;
-    max-width: 936px;
-    background-color:  #F2F3F7;
-    border-radius: 3px;
-    margin-bottom: 64px;
-}
-
-.project-detail-title2 {
-    margin-bottom: 72px;
-}
-
-.project-detail-footer {
-    padding: 0px 32px 16px 0px;
-    margin-top: 80px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.select-flex {
-    display: inline-flex;
-    align-items: center;
-}
-
 .select-span {
     margin-right: 24px;
     margin-bottom: 50px;
     margin-top: 50px;
-}
-
-.splitscreen {
-    background-color:  #F2F3F7;
-    display: flex;
-    flex-direction: row;
-}
-
-.leftSide {
-    max-height: 650px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding-left:220px;
-    margin-top: 55px;
-    width:41%;
 }
 
 body {

@@ -4,6 +4,8 @@ import Tabmenu from './component/TabMenu';
 import AddRush from './component/AddRush';
 import ProjectSummary from './component/ProjectSummary'
 import ProjectPlanning from './component/ProjectPlanning'
+import Navbar from './component/Navbar';
+import './component/ProjectSummary.css'
 
 
 function ProjectDetailGeneral() {
@@ -16,13 +18,18 @@ function ProjectDetailGeneral() {
 
   return (
     <>
-    <div className='tab-menu'>
+    <div className='splitscreen'>
+      <div className='navbar'>
+        <Navbar/>
+      </div>
+      <div className='tab-menu'>
         <Tabmenu givePage={havePage}></Tabmenu>
     </div>
     {page === "one" && <ProjectSummary/>}
     {page === "two" && <div></div>}
     {page === "three" && <AddRush/>}
     {page === "four" && <ProjectPlanning/>}
+    </div>
     </>
   )
 }

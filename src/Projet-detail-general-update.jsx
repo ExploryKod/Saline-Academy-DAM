@@ -1,11 +1,13 @@
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import './Project-detail-general-update.css'
+import './component/ProjectSummary'
 import * as React from 'react';
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
+import './component/ProjectPlanning.css'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -21,27 +23,23 @@ import Select from '@mui/material/Select';
 import { useNavigate } from "react-router-dom";
 import ProjectCard from './component/ProjectCard'
 import SupabaseService from "./tools/SupabaseClient";
-
+import Navbar from './component/Navbar';
 
 
 function ProjectDetailGeneralUpdate() {
 
     const navigate = useNavigate();
-    const [description, setDescription] = React.useState('');
-    const [professor, setProfessor] = React.useState('');
     const [projects, setProjects] = useState([]);
-    const sbsProjects = new SupabaseService();
+    const [teachers, setTeachers] = useState([]);
+    const [teacher, setTeacher] = useState();
+    const [specialisation, setSpecialisation] = useState ();
+    const sbs = new SupabaseService();
 
     useEffect(() => {
-        sbsProjects.getAllProjects().then((p) => {
+        sbs.getAllProjects().then((p) => {
             setProjects(p.data);
         });
       })
-
-    const handleChange = (event) => {
-      setDescription(event.target.value);
-      setProfessor(event.target.value);
-    };
   
     const [openCancel, setCancelOpen] = React.useState(false);
     const [openSave, setSaveOpen] = React.useState(false);
@@ -60,11 +58,28 @@ function ProjectDetailGeneralUpdate() {
       setSaveOpen(false);
     };
 
-    const denisSeverinDescription = 'Denis Severin est un musicien de grande envergure qui a fait beaucoup de blah blah blah blah blah blah blah'
-  
+    const handleTeacher = (event) => {
+      setTeacher(event.target.value)
+    };
+
+    const handleSpecialisation = (event) => {
+      setSpecialisation (event.target.val)
+    }
+
+    const handleSpecialisations = () => {
+      sbs.getAllSpecialisations().then((p) => {
+          setSpecialisation(p.data);
+      });}
+    
+    const handleTeachers = () => {
+      sbs.getAllTeachers().then((p) => {
+          setTeachers(p.data);
+      });}
+
     return (
       <>
       <div className='splitscreen'>
+        <Navbar/>
         <div className='leftSide'>
         {projects.map((project, index) => (
         <ProjectCard key={index} title={project.title} state="En cours" status={project.status}/>
@@ -78,62 +93,29 @@ function ProjectDetailGeneralUpdate() {
               <h3 className='project-detail-update-title'>Modifier les informations</h3>
                 <div className='select-flex'>
                 <span className='select-span'>Professeur :</span>
-                    <Box sx={{ minWidth: 120 }}>
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Professeur</InputLabel>
-                        <Select
-                        labelId="professor-select-label"
-                        id="professor-select"
-                        value={professor}
-                        label="Professeur"
-                        onChange={handleChange}
-                        >
-                        <MenuItem value={'Denis Severin'}>Denis Severin</MenuItem>
-                        <MenuItem value={'Mathilda Catcher'}>Mathilda Catcher</MenuItem>
-                        <MenuItem value={'Louis Leland'}>Louis Leland</MenuItem>
-                        </Select>
-                    </FormControl>
-                    </Box>
+            <select className='project-detail-planning-group-form-select' name="list" value={teacher} onClick={handleTeachers} onChange={handleTeacher}>
+						<option>Choisir un guest</option>
+							{teachers?.map((teacher) => <option value={teacher.id}>{`${teacher.name}`}
+						</option>)}
+						</select>
                 </div>
                   <br></br>
                   <div className='select-flex'>
                     <span className='project-detail-instrument select-span'>Instrument :</span>
-                  <Box sx={{ minWidth: 120 }}>
-                    <FormControl fullWidth>
-                        <InputLabel id="instrument-select-label">Instrument</InputLabel>
-                        <Select
-                        labelId="instrument-select-label"
-                        id="instrument-select"
-                        value={professor}
-                        label="Instrument>"
-                        onChange={handleChange}
-                        >
-                        <MenuItem value={'Denis Severin'}>Cello</MenuItem>
-                        <MenuItem value={'Mathilda Catcher'}>Violon</MenuItem>
-                        <MenuItem value={'Louis Leland'}>Piano</MenuItem>
-                        </Select>
-                    </FormControl>
-                    </Box>
+                    <select className='project-detail-planning-group-form-select' name="list" value={specialisation} onClick={handleSpecialisations} onChange={handleSpecialisation}>
+						<option>Choisir un guest</option>
+							{teachers?.map((teacher) => <option value={teacher.id}>{`${teacher.specialisation}`}
+						</option>)}
+						</select>
                   </div>
 
                   <div className='project-detail-description-section'>
                        <EmojiEventsIcon className='trophyIcon'></EmojiEventsIcon>
-                       <Box sx={{ minWidth: 120 }}>
-                    <FormControl fullWidth>
-                        <InputLabel id="description-select-label">Description</InputLabel>
-                        <Select
-                        labelId="description-select-label"
-                        id="description-select"
-                        value={professor}
-                        label="Description"
-                        onChange={handleChange}
-                        >
-                        <MenuItem value={'Denis Severin'}>{denisSeverinDescription}</MenuItem>
-                        <MenuItem value={'Mathilda Catcher'}>Mathilda Catcher est une très belle violoniste d'origine portugaise qui blah blah blah blah blah blah</MenuItem>
-                        <MenuItem value={'Louis Leland'}>Louis Leland est un pianiste agée mais toujours dans la recherche de nouveauté blah blah blah blah blah</MenuItem>
-                        </Select>
-                    </FormControl>
-                    </Box>
+                       <select controlShouldRenderValue={false} className='project-detail-planning-group-form-select' name="list" value={teacher} onClick={handleTeachers} onChange={handleTeacher}>
+						<option>Choisir un guest</option>
+							{teachers?.map((teacher) => <option value={teacher.id}>{`${teacher.description}`}
+						</option>)}
+						</select>
                   </div>
               </div>
           </section>
