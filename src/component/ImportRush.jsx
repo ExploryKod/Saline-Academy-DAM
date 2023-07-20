@@ -12,6 +12,8 @@ export default function ImportRush (){
             video: rushUrl,
         }
         sbs.insertRushVideo(data)
+        window.location.reload();
+
     }
     
     return(
@@ -28,3 +30,6 @@ export default function ImportRush (){
         </div>
     )
 }
+
+
+ 

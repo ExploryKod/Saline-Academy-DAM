@@ -11,8 +11,8 @@ export default function () {
     return(
 
         <div className='lightGreyContent'>
-            <p>...</p>
-            <img />
+            <p>Bien tenir sa guitare - Verison 1 - Statut : En attente </p>
+            <img src=""/>
 
 
             <Accordion>
@@ -40,8 +40,8 @@ export default function () {
 
 
             <div>
-                <p>Commentaire</p>
-                <div>...</div>
+                <p>Commentaires</p>
+                <input type="text" name="addComment" className='addCommentInput'  /> 
             </div>
         </div>
     )

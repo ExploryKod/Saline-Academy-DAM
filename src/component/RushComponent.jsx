@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ImportRush from './ImportRush'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -14,6 +14,16 @@ export default function () {
     const handleClickSecond = () => {
         setShowSecondComponent(true);
       };
+
+      const [comment, setComment] = useState('');
+      const commentRef = useRef();
+      const handleSubmit = () => {
+          const sbs = new SupabaseService();
+          const data = {
+              comment: comment
+          }
+          sbs.insertRushVideo(data)
+      }
       
     return(
         <div>  
@@ -49,12 +59,11 @@ export default function () {
                 </Accordion>
             </div>
 
-            <br/><br/>
-
             <div className='addComment'>
-                <label for="addComment" className='addCommentLabel' >Ajouter un commentaire</label>
+                <label for="addComment" className='addCommentLabel'>Ajouter un commentaire</label>
                 <br/>
-                <input type="text" name="addComment" className='addCommentInput'/> 
+                <input type="text" name="addComment" className='addCommentInput' ref={commentRef} onChange={() => setComment(commentRef.current.value)}/> 
+                <button className='submitButtonComment' onClick={handleSubmit}> Soumettre</button>
             </div>
         </div>
     )

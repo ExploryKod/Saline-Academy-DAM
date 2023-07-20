@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react'
 import Tabmenu from './component/TabMenu';
-import AddRush from './component/AddRush';
+import AddRushPage from './component/AddRushPage';
 import ProjectSummary from './component/ProjectSummary'
 import ProjectPlanning from './component/ProjectPlanning'
 
@@ -21,7 +21,7 @@ function ProjectDetailGeneral() {
     </div>
     {page === "one" && <ProjectSummary/>}
     {page === "two" && <div></div>}
-    {page === "three" && <AddRush/>}
+    {page === "three" && <AddRushPage/>}
     {page === "four" && <ProjectPlanning/>}
     </>
   )

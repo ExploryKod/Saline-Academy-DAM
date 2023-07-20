@@ -13,6 +13,7 @@ export default function AddRush (){
             projet_id:116,
         }
         sbs.createRushVideo(data)
+        window.location.reload();
     }
 
     return(

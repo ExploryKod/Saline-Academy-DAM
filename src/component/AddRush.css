@@ -59,10 +59,6 @@
     width: 200px;
 }
 
-.labelAddVideo {
-    padding-right: 72% !important;
-}
-
 .labelAddSound {
     padding-right: 62%;
     position: relative;
@@ -70,9 +66,22 @@
 }
 
 .submitButton {
+    border-radius: 7px;
     position: relative;
-    top: 55px;
-    left: 65px;
+    top: 44px;
+    left: 116px;
+    height: 26px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+.submitButtonComment{
+    border-radius: 7px;
+    position: relative;
+    top: 44px;
+    height: 26px;
+    width: 100px;
+    border: 1px solid black;
 }
 
 .addRush{
@@ -84,15 +93,18 @@
 }
 
 .importVideo {
+    border-radius: 7px;
     position: relative;
-    right: 183px;
+    height: 35px;
+    width: 140px;
+    border: 1px solid black;
     z-index: 1;
 }
 
 .urlVideo {
     position: relative;
-    right: 60px;
-    top: 9px;
+    right: 4px;
+    top: 17px;
     border: 1px solid white;
     border-radius: 5px;
     height: 25px;
@@ -105,12 +117,6 @@
     width: 500px;
     margin-left: 50px;
     border-radius: 15px;
-}
-
-.addCommentLabel {
-    position: relative;
-    top: 10px;
-    right: 140px;
 }
 
 .addCommentInput {
