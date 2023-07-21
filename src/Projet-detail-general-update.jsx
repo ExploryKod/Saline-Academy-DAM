@@ -98,7 +98,9 @@ function ProjectDetailGeneralUpdate() {
   return (
     <>
       <div className='splitscreen'>
-        <Navbar />
+      <div className='navbar'>
+        <Navbar/>
+      </div>
         <div className='leftSide'>
           {projects.map((prj, index) => (
             <ProjectCard key={index} title={prj.title} state="En cours" status={prj.status} />
