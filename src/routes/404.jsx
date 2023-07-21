@@ -12,7 +12,8 @@ export const NotFoundPage = () => {
                 </div>
                 <div className="not-found__text-container">
                     <h1 className="not-found__title">404</h1>
-                    <p> Aucune page "{searchedPage}" trouvé.</p>
+                    {searchedPage === 'connexion' ? <p> Vous êtes déjà connecté.</p> : <p> Aucune page "{searchedPage}" trouvé.</p>}
+                    
                     <a href="/" >Retour</a>
                 </div>
         </div>
