@@ -1,7 +1,7 @@
 {
   "name": "token saline api",
   "version": "1.0.0",
-  "description": "E-commerce",
+  "description":"generate token for saline Academy",  
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
