@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-export const EmailForm = ({ manager, onClose}) => {
+export const EmailForm = ({onClose, manager}) => {
 
   const form = useRef();
 
@@ -10,7 +10,7 @@ export const EmailForm = ({ manager, onClose}) => {
 
     emailjs.sendForm('service_2pydh8k', 'template_w6c9oks', form.current, 'CKCvKnMX25We3mOrl')
       .then((result) => {
-          console.log(result.text);
+          console.log('Envoi email', result.text);
       }, (error) => {
           console.log(error.text);
       });
@@ -20,6 +20,7 @@ export const EmailForm = ({ manager, onClose}) => {
 
   
   return (
+    <div onClick={onClose} className={`email-modal-wrapper`}>
       <div className={`email-modal`}>
       <form className="email-form" ref={form} onSubmit={sendEmail}>
       <h2>Contacter {manager.firstname} {manager.lastname}</h2>
@@ -45,12 +46,11 @@ export const EmailForm = ({ manager, onClose}) => {
       </div>
       <div className="s-input-wrapper">
       <button className="btn-1 s-input-submit-purple" type="submit">Envoyer</button>
-      <button  onClick={onClose} className="btn-1 s-input-submit-purple" type="button">Retour</button>
     </div>
       
     </form>
       </div>
- 
+    </div>
    
   );
 };

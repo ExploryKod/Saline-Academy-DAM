@@ -1,4 +1,6 @@
-
+.firstContainer__title {
+    margin-bottom: 20px;
+}
 .planning-cols__card-wrapper {
     height: 200px!important;
 
@@ -21,7 +23,12 @@
         cursor: pointer;
         transition: background-color 0.3s ease-in-out;
 
-        .project-card-infos-state {
+        &.project-card-padding {
+            padding: 5px;
+        }
+
+      
+        .project-card-infos-state, div:nth-of-type(1) {
             display: flex;
             align-items: center;
             gap: 10px;

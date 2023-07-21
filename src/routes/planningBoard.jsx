@@ -10,6 +10,8 @@ import { capitalizeFirstLetter, formatDate, calculateDelayFromToday } from '../t
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EmailIcon from '@mui/icons-material/Email';
 
 const style = {
   width: 400,
@@ -52,12 +54,14 @@ const PlanningBoard = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);  
     const [projectPlanningData, setProjectPlanningData] = useState([]);
+    const [selectedManager, setSelectedManager] = useState(null);
 
-    const handleOpenManagerModal = () => {
+    const handleOpenManagerModal = (managerData) => {
+      setSelectedManager(managerData);
       setModalOpen(true);
     };
   
-    const handleCloseManagerModal = () => {
+    const handleCloseModal = () => {
       setModalOpen(false);
     };
 
@@ -103,7 +107,7 @@ const PlanningBoard = () => {
       <div className={styles.globalContainer}>
           <Navbar />
           <div className={styles.firstContainer}>
-              <h1>Vos projets en cours</h1>
+              <h1 className="firstContainer__title">Vos projets en cours</h1>
 
               <Fab sx={{width: '200px', fontWeight: 'bold', borderRadius: 5, boxShadow: 'none', color: '#A3298B', bgcolor: 'transparent' }}>
                 <TuneRoundedIcon sx={{ mr: 1, color: '#A3298B' }} />
@@ -119,7 +123,7 @@ const PlanningBoard = () => {
                           .filter((project) => project.title && project.status) 
                           .map((project, index) => (
                             <>
-                              <div key={project.id} onClick={handleOpen} className='planning-cols__card-wrapper planning-cols__project-card'>
+                              <div key={index} onClick={handleOpen} className='planning-cols__card-wrapper planning-cols__project-card'>
                               <ProjectCard title={project.title} state={project.state ? project.state : ""} status={project.status}/>
                             </div>
                               <Modal
@@ -205,13 +209,22 @@ const PlanningBoard = () => {
                         .map((project, index) => (
                           <>
                         <div key={index} className="planning-cols__card-wrapper  planning-cols__manager">
-                          <div onClick={handleOpenManagerModal} className="manager__card" style={{border: '2px solid blue', padding: '10px', borderRadius: '5px', cursor: 'pointer'}}>
-                            <p className="">{project.manager.firstname ? project.manager.firstname : "Aucune info"} {project.manager.lastname ? project.manager.lastname : "Aucune info"}</p>
-                            <p className="">{project.manager.email ? project.manager.email : "Aucun email fourni"}</p>
+                          <div onClick={() => handleOpenManagerModal(project.manager)} className='project-card project-card-padding'>
+                          <div></div>
+                          <div className="project-card-infos">
+                            <div>
+                              <AccountCircleIcon className='project-card-logo__svg' />
+                              <h3 className='project-card-infos__title'>{project.manager.firstname ? project.manager.firstname : ""} {project.manager.lastname ? project.manager.lastname : ""}</h3>
+                            </div>
+                            
+                            <div className='project-card-infos-state'>
+                                      <EmailIcon/>
+                              <p className='project-card-infos-state__status'>{project.manager.email ? project.manager.email : "Aucun email fourni"}</p>
+                            </div>
                           </div>
                         </div>
-                 
-                     {isModalOpen && <EmailForm  key={project.id} manager={project.manager} onClose={handleCloseManagerModal}/>}
+                        {isModalOpen && <EmailForm manager={selectedManager} onClose={handleCloseModal}/>}
+                     </div>
                 
                           </>
                 
