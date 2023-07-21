@@ -25,6 +25,10 @@ li {
     list-style: none;
   }
 
+textarea.no-resize {
+  resize: none;
+}
+
 h1, h3 {
   margin: 0;
   padding: 0;

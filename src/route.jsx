@@ -8,6 +8,7 @@ import ProjectDetailGeneralUpdate from "./Projet-detail-general-update";
 import useToken from './tools/useToken';
 import './styles/style.scss'
 import Homepage from "./pages/Homepage";
+import PlanningBoard from "./routes/planningBoard";
 
 
 const RoutesComponent = () => {
@@ -24,6 +25,7 @@ const RoutesComponent = () => {
                 <Route path="/project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />
                 <Route path="/projet-detail-add-rush" element={<AddRushPage/>}/>
                 <Route path='*' element={<NotFoundPage />} />
+                <Route path="/planning" element={<PlanningBoard />} />
             </Routes>):(
                 <Routes>
                     <Route path="/" element={<Navigate to="/connexion" replace />} />

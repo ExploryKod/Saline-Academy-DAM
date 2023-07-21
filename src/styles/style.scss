@@ -5,18 +5,20 @@
 @import 'bases/reset';
 @import 'bases/responsive';
 
+/* Components that need to be called before */
+@import 'components/buttons';
+@import 'components/inputs';
+@import 'components/planningCard';
+
 /* Style for some utilities */
 @import 'utilities/passwordStrength';
 
 /* Style for components */
-@import 'components/buttons';
+@import 'components/emailForm';
+@import 'components/planningBoard';
+
 
 /* Style for routes (pages) */
 @import 'routes/404';
 @import 'routes/connexion';
-@import 'routes/userDeletePage';
-
-/* TODO: styles pour l'exemple à supprimer */
-@import './index';
-@import './app';
 

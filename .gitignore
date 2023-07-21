@@ -1,6 +1,11 @@
 /node_modules
 node_modules
 
+/saline_api
+saline_api
+saline_api/*
+saline_api/**/*
+
 # JetBrain IDEs
 .DS_Store
 

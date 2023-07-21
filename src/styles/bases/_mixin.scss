@@ -30,3 +30,25 @@
     transform: translateX(-50%);
   }
 }
+
+/* Mixin pour créer vos scroll bar avec couleur personnalisable */
+
+@mixin scrollbar($vertical_overflow: auto, $scroll-color: $darkpink) {
+  overflow-y: $vertical_overflow;
+  scrollbar-color: #aaa transparent;
+  scrollbar-width: thin;
+
+
+
+  &::-webkit-scrollbar {
+    background: #fff;
+    width: 5px;
+    // top-right and bottom-right radius need to be the same as container border-radius
+    border-radius: 0 10px 10px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-color;
+    border-radius: 8px;
+  }
+}
