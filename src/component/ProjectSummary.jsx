@@ -32,33 +32,38 @@ import SupabaseService from '../tools/SupabaseClient';
 
 function ProjectSummary() {
 
-    const [projects, setProjects] = useState([]);
-    const sbsProjects = new SupabaseService;
-    const [page, setPage] = React.useState("")
+  const [projects, setProjects] = useState([]);
+  const sbsProjects = new SupabaseService;
+  const [page, setPage] = useState("");
+  const [data, setData] = useState(null);
+  const [teacher, setTeacher] = useState();
 
-    const havePage = (page) => {
-      setPage(page);
-    };
+  const setProjectToShow = (data) => {
+    setData(data);
+    sbsProjects.getTeacherById(data.teacher_id).then((res) => {setTeacher(res.data[0])});
+  };
 
-    useEffect(() => {
-        sbsProjects.getAllProjects().then((p) => {
-            setProjects(p.data);
-        });
-      })
+  const havePage = (page) => {
+    setPage(page);
+  };
 
-    const [description, setDescription] = React.useState('');
-    const handleChange = (event) => {
+  useEffect(() => {
+    sbsProjects.getAllProjects().then((p) => {
+      setProjects(p.data);
+    });
+  })
+
+  const [description, setDescription] = React.useState('');
+  const handleChange = (event) => {
     setDescription(event.target.value);
   };
 
   const navigate = useNavigate();
 
   const steps = [
-    'Programmation',
-    'Captation',
-    'Post-production',
-    'Editorial',
-    'Publication',
+    'En attente',
+    'En cours',
+    'Terminé',
   ];
 
   const [openPriority, setPriorityOpen] = React.useState(false);
@@ -83,136 +88,149 @@ function ProjectSummary() {
     setDeleteOpen(false);
   };
 
+  const handlePriorityValidate = () => {
+    sbsProjects.setPriority(data.id, !data.hasPriority)
+    .then((res) => 
+    {setData(res.data[0])});
+    setPriorityOpen(false);
+  }
+
+  const handleDelete = () => {
+    sbsProjects.deleteProject(data.id).then(() => {setData(null); setTeacher(null)});
+    setDeleteOpen(false);
+  }
+
   return (
-<div className='splitscreen'>
-        <div className='leftSide'>
-          <h1>Projets</h1>
-          <h4>{projects.length} projets</h4>
+    <div className='splitscreen'>
+      <div className='leftSide'>
+        <h1>Projets</h1>
+        <h4>{projects.length} projets</h4>
         {projects.map((project, index) => (
-        <ProjectCard key={index} title={project.title} status={project.status}/>
-      ))}
-        </div>    
+          <ProjectCard setProjectToShow={setProjectToShow} key={index} title={project.title} status={project.status} project={project} />
+        ))}
+      </div>
+      {data ?
         <div className='rightSide'>
-   <div className='project-detail-background'>
-        <h2 className='project-detail-title'>Enregistrement Cello</h2>
-        <section className='project-detail-section'>
-            <div className='edit-button'>
-                <Link to="/project-detail-general-update" className='editButton'><EditIcon className='editIcon'></EditIcon></Link>
-            </div>
-            <div className='project-detail-section1-content'>
-                <span>Professeur : Denis Severin</span>
+          <div className='project-detail-background'>
+            <h2 className='project-detail-title'>{data.title}</h2>
+            <section className='project-detail-section'>
+              <div className='edit-button'>
+                <Link to="/project-detail-general-update" state={{project: data}} className='editButton'><EditIcon className='editIcon'></EditIcon></Link>
+              </div>
+              <div className='project-detail-section1-content'>
+                <span>Professeur : {teacher ? teacher.name : ''}</span>
                 <br></br>
-                <span className='project-detail-instrument'>Instrument : Cello</span>
+                <span className='project-detail-instrument'>Spécialisation : {teacher ? teacher.specialisation : ''}</span>
                 <div className='project-detail-description-section'>
-                     <EmojiEventsIcon className='trophyIcon'></EmojiEventsIcon>
-                     <Accordion>
-                         <AccordionSummary
-                         expandIcon={<ExpandMoreIcon />}
-                          aria-controls="project-detail-description-content"
-                            id="project-detail-description-header">
-                            <Typography>Description</Typography>
-                         </AccordionSummary>
-                         <AccordionDetails>
-                            <Typography>
-                            Professor of cello at the Geneva University of Music and the Bern University of Arts.
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
+                  <EmojiEventsIcon className='trophyIcon'></EmojiEventsIcon>
+                  <Accordion>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="project-detail-description-content"
+                      id="project-detail-description-header">
+                      <Typography>Description</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography>
+                        {data.description}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
                 </div>
                 <div className='division'> </div>
                 <section>
-                    <div className='project-detail-section2-content'>
-                        <h3 className='project-detail-title2'>Statut du projet</h3>
-                        <div className='project-detail-stepper'>
-                        <Box sx={{ width: '200%' }}>
-                            <Stepper activeStep={0} alternativeLabel>
-                                {steps.map((label) => (
-                                <Step key={label}>
-                                    <StepLabel>{label}</StepLabel>
-                                </Step> ))}
-                            </Stepper>
-                        </Box>
-                        </div>
+                  <div className='project-detail-section2-content'>
+                    <h3 className='project-detail-title2'>Statut du projet</h3>
+                    <div className='project-detail-stepper'>
+                      <Box sx={{ width: '200%' }}>
+                        <Stepper activeStep={0} alternativeLabel>
+                          {steps.map((label) => (
+                            <Step key={label}>
+                              <StepLabel>{label}</StepLabel>
+                            </Step>))}
+                        </Stepper>
+                      </Box>
                     </div>
+                  </div>
                 </section>
+              </div>
+            </section>
+            <div className='project-detail-footer'>
+              <Stack spacing={2} direction="row">
+                <Button variant="contained" color='secondary' onClick={priorityDialogOpen} startIcon={<PriorityHighIcon />}>{data.hasPriority ? 'Déprioriser' : 'Prioriser'}</Button>
+                <Dialog
+                  open={openPriority}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title-priority">
+                    {"Prioriser le projet"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-priority">
+                      Appuyer sur le bouton valider mettra le projet en priorité dans les projet en cours.<br></br><br></br> Êtes vous sûr de vouloir continuer ?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button variant="contained" color='secondary' startIcon={<CancelIcon />} onClick={handleClose}>Annuler</Button>
+                    <Button variant="contained" color='secondary' startIcon={<CheckCircleIcon />} onClick={handlePriorityValidate} autoFocus>
+                      Valider
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Button variant="contained" color='secondary' onClick={pauseDialogOpen} startIcon={<PauseIcon />}>Mettre en pause</Button>
+                <Dialog
+                  open={openPause}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title-pause">
+                    {"Mettre en pause le projet"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-pause">
+                      Appuyer sur le bouton valider mettra en pause toute avancée du projet pour une durée indéterminée. <br></br><br></br> Êtes vous sûr de vouloir continuer ?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button variant="contained" color='secondary' startIcon={<CancelIcon />} onClick={handleClose}>Annuler</Button>
+                    <Button variant="contained" color='secondary' startIcon={<CheckCircleIcon />} onClick={handleClose} autoFocus>
+                      Valider
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Button variant="contained" color='error' onClick={deleteDialogOpen} startIcon={<DeleteIcon />}>Supprimer</Button>
+                <Dialog
+                  open={openDelete}
+                  onClose={handleClose}
+                  aria-labelledby="alert-dialog-title-delete"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {"Supprimer le projet"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-delete">
+                      Appuyer sur le bouton supprimer supprimera définitivement le projet. Ceci empêchera toutes modifications par la suite.<br></br><br></br> Êtes vous sûr de vouloir continuer ?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button variant="contained" color='secondary' startIcon={<CancelIcon />} onClick={handleClose}>Annuler</Button>
+                    <Button variant="contained" color='secondary' startIcon={<DeleteIcon />} onClick={handleDelete} autoFocus>
+                      Supprimer
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Stack>
             </div>
-        </section>
-        <div className='project-detail-footer'>
-        <Stack spacing={2} direction="row">
-            <Button variant="contained" color='secondary' onClick={priorityDialogOpen} startIcon={<PriorityHighIcon />}>Prioriser</Button>
-            <Dialog
-        open={openPriority}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title-priority">
-          {"Prioriser le projet"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-priority">
-          Appuyer sur le bouton valider mettra le projet en priorité dans les projet en cours.<br></br><br></br> Êtes vous sûr de vouloir continuer ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color='secondary' startIcon={<CancelIcon />} onClick={handleClose}>Annuler</Button>
-          <Button variant="contained" color='secondary' startIcon={<CheckCircleIcon />} onClick={handleClose} autoFocus>
-            Valider
-          </Button>
-        </DialogActions>
-      </Dialog>
-            <Button variant="contained" color='secondary' onClick={pauseDialogOpen} startIcon={<PauseIcon />}>Mettre en pause</Button>
-            <Dialog
-        open={openPause}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title-pause">
-          {"Mettre en pause le projet"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-pause">
-          Appuyer sur le bouton valider mettra en pause toute avancée du projet pour une durée indéterminée. <br></br><br></br> Êtes vous sûr de vouloir continuer ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color='secondary'startIcon={<CancelIcon />} onClick={handleClose}>Annuler</Button>
-          <Button variant="contained" color='secondary' startIcon={<CheckCircleIcon />} onClick={handleClose} autoFocus>
-            Valider
-          </Button>
-        </DialogActions>
-      </Dialog>
-            <Button variant="contained" color='error' onClick={deleteDialogOpen} startIcon={<DeleteIcon />}>Supprimer</Button>
-            <Dialog
-        open={openDelete}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title-delete"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Supprimer le projet"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-delete">
-          Appuyer sur le bouton supprimer supprimera définitivement le projet. Ceci empêchera toutes modifications par la suite.<br></br><br></br> Êtes vous sûr de vouloir continuer ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color='secondary' startIcon={<CancelIcon />} onClick={handleClose}>Annuler</Button>
-          <Button variant="contained" color='secondary' startIcon={<DeleteIcon />} onClick={() => navigate("/")} autoFocus>
-            Supprimer
-          </Button>
-        </DialogActions>
-      </Dialog>
-        </Stack>
+          </div>
         </div>
+        : (<div className='rightSide'><div className='project-detail-background'><h2 className='project-detail-title'>Choisir un projet</h2></div></div>)}
+
     </div>
-        </div>
-     
-    </div>
-    )
+  )
 }
 
 export default ProjectSummary

@@ -11,62 +11,62 @@ class SupabaseService {
 
         this.client = createClient(supabaseUrl, supabaseKey);
     }
-    
+
     async getTest() {
         return this.client.from("class")
-        .select('*')
+            .select('*')
     }
-    
+
     async createProject(projectData) {
-      return this.client.from("projets")
-        .insert(projectData)
-        .select();
+        return this.client.from("projets")
+            .insert(projectData)
+            .select();
     }
     async insertDataPlannification(room, teacher, crew) {
-      return this.client
-        .from("projets")
-        .upsert([{ id: 111, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
+        return this.client
+            .from("projets")
+            .upsert([{ id: 111, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
     }
 
     async getAllUsers() {
         return this.client.from("users")
-        .select('*');
+            .select('*');
     }
     async getAllProjects() {
         return this.client.from("projets")
-        .select('*');
+            .select('*');
     }
     async getAllTeachers() {
         return this.client.from("teacher")
-        .select('*');
+            .select('*');
     }
     async getAllRooms() {
         return this.client.from("room")
-        .select('*');
+            .select('*');
     }
     async getAllCrews() {
         return this.client.from("crew")
-        .select('*');
+            .select('*');
     }
     // async getTestBySlug(slug) {
     //     return this.client.from("class")
     //       .select('*')
     //       .eq("slug", slug);
     //   }
-    
+
     //   async createTest(pageData) {
     //     return this.client.from("class")
     //       .insert(pageData)
     //       .select();
     //   }
-  
+
     async getProducterUsers() {
         return this.client.from("users")
-        .select('*')
-        .eq("role", "PRODUCTEUR");
+            .select('*')
+            .eq("role", "PRODUCTEUR");
     }
 
-    
+
     async getVideoEditing() {
         return this.client.from("videoEditing")
             .select('*')
@@ -81,6 +81,35 @@ class SupabaseService {
         return this.client.from("participants")
             .select("*")
             .eq('user_id', id)
+    }
+
+
+    async deleteProject(id) {
+        return this.client.from("projets")
+            .delete()
+            .eq('id', id)
+    }
+
+    async setPriority(id, val) {
+        return this.client.from("projets")
+            .update({
+                hasPriority: val
+            })
+            .eq('id', id)
+            .select()
+    }
+
+    async getTeacherById(id) {
+        return this.client.from("teacher")
+        .select('*')
+        .eq('id', id)
+    }
+
+    async updateProject(id, teach, desc) {
+        return this.client.from("projets")
+        .update({teacher_id : teach, description : desc})
+        .eq('id', id)
+        .select()
     }
 
     async saveTokenUser(token, id) {

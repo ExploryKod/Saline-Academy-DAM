@@ -1,11 +1,13 @@
 import './ProjectCard.css'
 import singLogo from '../assets/sing-logo.svg'
 import box from '../assets/box.svg'
+import * as React from 'react';
 
 
 const ProjectCard = (props) => {
+
 	return (
-	  <div className='project-card'>
+	  <div className='project-card' onClick={() => props.setProjectToShow(props.project)}>
 		<div className='project-card-logo'>
 			<img className='project-card-logo__svg' src={singLogo} alt="singLogo" />
 		</div>
