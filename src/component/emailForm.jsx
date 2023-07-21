@@ -7,8 +7,8 @@ export const EmailForm = ({onClose, manager}) => {
 
   const sendEmail = (e) => {
     e.preventDefault();
-
-    emailjs.sendForm('service_2pydh8k', 'template_w6c9oks', form.current, 'CKCvKnMX25We3mOrl')
+    // ajoutez les élèments issu de emailjs si besoin de restaurer l'envoi d'email
+    emailjs.sendForm('', '', form.current, '')
       .then((result) => {
           console.log('Envoi email', result.text);
       }, (error) => {

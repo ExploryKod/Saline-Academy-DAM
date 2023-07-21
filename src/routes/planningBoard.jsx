@@ -223,7 +223,7 @@ const PlanningBoard = () => {
                             </div>
                           </div>
                         </div>
-                      
+                        {isModalOpen && <EmailForm manager={selectedManager} onClose={handleCloseModal}/>}
                      </div>
                 
                           </>
