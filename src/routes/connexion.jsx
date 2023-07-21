@@ -7,6 +7,7 @@ import FlashMessage from '../component/flashMessage';
 import { useNavigate } from 'react-router-dom';
 import zxcvbn from 'zxcvbn';
 import { AppContext } from '../AppContext';
+import loader from '../assets/loader.svg';
 
 async function loginUser(credentials, id) {
   const sbs = new SupabaseService();
@@ -176,7 +177,13 @@ const handleRegisterSubmit = async (e) => {
   };
 
   return (
-      <main className="page-connexion">
+    loading ? <div className="loading-container">
+      <div className="loading__img-wrapper">
+        <img src={loader} alt="loader" />
+      </div>
+   
+    </div> :
+      (<main className="page-connexion">
             <div className="outer-connexion">
               <div className="inner-connexion">
                 {flashMessage && <FlashMessage message={flashMessage}/>}
@@ -256,7 +263,7 @@ const handleRegisterSubmit = async (e) => {
                 )}
               </div>
             </div>
-      </main>
+      </main>)
   );
 };
 
