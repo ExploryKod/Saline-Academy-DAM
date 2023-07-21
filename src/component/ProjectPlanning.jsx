@@ -8,12 +8,14 @@ import SupabaseService from "../tools/SupabaseClient";
 function ProjectPlanning() {
 
     const [projects, setProjects] = useState([]);
+    const [project, setProject] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [teacher, setTeacher] = useState();
     const [rooms, setRooms] = useState([]);
     const [room, setRoom] = useState();
     const [crews, setCrews] = useState([]);
     const [crew, setCrew] = useState();
+	const [data, setData] = useState(null);
     const sbs = new SupabaseService();
 
     const handleTeachers = () => {
@@ -45,10 +47,14 @@ function ProjectPlanning() {
       });}
 
       const handleSubmit = () =>  {
-        console.log(room, teacher, crew);
-        sbs.insertDataPlannification(room, teacher, crew);
+        sbs.insertDataPlannification(data.id, room, teacher, crew);
     };
 
+	const setProjectToShow = (data) => {
+		setData(data);
+		sbs.getProjectById(data).then((res) => {setProject(res.data[0])});
+	  };
+console.log(data);
     useEffect(() => {
         sbs.getAllProjects().then((p) => {
             setProjects(p.data);
@@ -61,12 +67,12 @@ function ProjectPlanning() {
 		  <h1>Projets</h1>
           <h4>{projects.length} projets</h4>
           {projects.map((project, index) => (
-            <ProjectCard key={index} title={project.title} status={project.status}/>
+            <ProjectCard setProjectToShow={setProjectToShow} key={index} title={project.title} status={project.status} project={project}/>
           ))}
           </div>    
           <div className='rightSide'>
             <div className='project-detail-background'>
-              <h1 className='project-detail-title'>Enregistrement Cello</h1>
+              <h1 className='project-detail-title'>{data.title}</h1>
               <section className='project-detail-section'>
                   <h1 className='project-detail-planning-title'>Plannification du projet</h1>
 				  <div className='project-detail-planning-group'>

@@ -22,10 +22,10 @@ class SupabaseService {
             .insert(projectData)
             .select();
     }
-    async insertDataPlannification(room, teacher, crew) {
+    async insertDataPlannification(id, room, teacher, crew) {
         return this.client
             .from("projets")
-            .upsert([{ id: 111, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
+            .upsert([{ id: id, room_id: room, teacher_id: teacher, crew_id: crew, state: 'Captation' }], { onConflict: 'id' });
     }
 
     async createRushVideo(videoData) {
@@ -115,6 +115,11 @@ class SupabaseService {
 
     async getTeacherById(id) {
         return this.client.from("teacher")
+        .select('*')
+        .eq('id', id)
+    }
+    async getProjectById(id) {
+        return this.client.from("project")
         .select('*')
         .eq('id', id)
     }
