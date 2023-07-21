@@ -72,7 +72,7 @@ console.log(data);
           </div>    
           <div className='rightSide'>
             <div className='project-detail-background'>
-              <h1 className='project-detail-title'>{data.title}</h1>
+              <h1 className='project-detail-title'>{data?.title}</h1>
               <section className='project-detail-section'>
                   <h1 className='project-detail-planning-title'>Plannification du projet</h1>
 				  <div className='project-detail-planning-group'>
