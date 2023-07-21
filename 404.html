@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
+</head>
+<body>
+<div id="root"></div>
+<script>
+    // This code loads your React app and handles client-side routing
+    (function() {
+        var path = window.location.pathname;
+        if (path !== "/" && path.endsWith("/")) {
+            path = path.slice(0, -1);
+        }
+        var location = path || "/";
+        window.history.replaceState({}, "", location);
+        var script = document.createElement("script");
+        script.src = "./dist/assets/index-d296cad1.js";
+        script.async = true;
+        document.getElementById("root").appendChild(script);
+    })();
+</script>
+</body>
+</html>
