@@ -52,7 +52,7 @@ export default function () {
             ))}
             </div>    
 
-            <div className='rightSide lightGreyContent'>
+            <div className='rightSiderush lightGreyContent'>
                 <Accordion>
                     <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
