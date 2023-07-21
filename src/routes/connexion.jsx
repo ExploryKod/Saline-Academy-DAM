@@ -11,7 +11,7 @@ import { AppContext } from '../AppContext';
 async function loginUser(credentials, id) {
   const sbs = new SupabaseService();
 
-  const token = await fetch(`http://localhost:5326/login/${id}`, {
+  const token = await fetch(`https://tokengenerator-zqnt.onrender.com/login/${id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
