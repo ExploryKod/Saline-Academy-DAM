@@ -6,6 +6,8 @@
 	display: flex;
 	align-items: center;
 	border: 1px solid #D8DBE5;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .project-card-logo {
