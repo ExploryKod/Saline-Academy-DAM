@@ -11,7 +11,7 @@ export default function () {
     return(
 
         <div className='lightGreyContent'>
-            <p>Bien tenir sa guitare - Verison 1 - Statut : En attente </p>
+            <p>Bien tenir sa guitare - Version 1 - Statut : En attente </p>
             <img src=""/>
 
 

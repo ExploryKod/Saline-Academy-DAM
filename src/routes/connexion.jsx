@@ -219,8 +219,8 @@ const handleRegisterSubmit = async (e) => {
                               <option value="COPRODUCTEUR">Co-producteur</option>
                               <option value="REDACTEUR">Rédacteur</option>
                               <option value="REALISATEUR">Réalisateur</option>
-                              <option value="MONTEUR">Réalisateur</option>
-                              <option value="MARKETING">Réalisateur</option>
+                              <option value="MONTEUR">Monteur</option>
+                              <option value="MARKETING">Marketing</option>
                             </select>
                         </div>
 
