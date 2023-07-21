@@ -9,13 +9,20 @@
     top: 0;
     left: 0;
     background-color: $darkLavender;
+
+    h2 {
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
 }
 
 .email-modal {
     z-index: 2500;
     width: 500px;
     height: 500px;
-    background-color: white;
+    background-color: $darkBlue;
     border-radius: 10px;
     padding: 10px;
     box-sizing: border-box;
@@ -35,6 +42,7 @@
         gap: 10px;
 
         label {
+            color: white;
             width: 100%;
             position: relative;
             display: flex;
