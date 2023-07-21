@@ -1,9 +1,10 @@
 .lightGreyContent{
     background-color: #F2F3F7;
-    height: 300px;
+    height: auto;
     width: 600px;
     border-radius: 10px;
     padding: 20px;
+    z-index: 1;
 }
 
 .addRushAccordion {
@@ -34,4 +35,10 @@
 .addRushButtonLogo {
     height: 50px;
     width: 50px;
+    position: relative;
+    left: 41px;
+}
+
+.rightSide {
+    margin-right: 1px;
 }
