@@ -83,6 +83,17 @@
             align-items: center;
             margin:20px 0;
 
+            label.role-text {
+              width: 70%;
+              font-size: 18px;
+              text-align: center;
+              margin-bottom: 5px;
+              color:$darkLavender;
+
+
+
+            }
+
             .form-elem__inner {
               width: 100%;
               display: flex;

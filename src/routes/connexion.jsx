@@ -175,11 +175,6 @@ const handleRegisterSubmit = async (e) => {
     setLoginData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-
-  console.log('session', sessionData);
-  console.log('password strength', passwordStrength);
-  console.log('loading', loading);
-
   return (
       <main className="page-connexion">
             <div className="outer-connexion">
@@ -212,7 +207,7 @@ const handleRegisterSubmit = async (e) => {
                         )}
 
                         <div className="form-elem">
-                            <label htmlFor="role">Sélectionnez un rôle:</label>
+                            <label htmlFor="role" className="role-text">Sélectionnez un rôle:</label>
                             <select name="role" id="role" onChange={handleRegisterChange} value={registerData.role}>
                               <option value="USER">Utilisateur</option>
                               <option value="PRODUCTEUR">Producteur</option>

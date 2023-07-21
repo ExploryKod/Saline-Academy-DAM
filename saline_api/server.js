@@ -1,6 +1,5 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const bcrypt = require("bcryptjs")
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
@@ -10,13 +9,12 @@ app.use(express.json());
 app.use(cors());
 dotenv.config({ path: './.env'})
 
-// test
 app.use('/login/:id', async (req, res) => {
   const { id } = req.params;
   parseInt(id);
 
   try {
-    // Query the user with the specified ID from the custom user table
+    // Vérifier que l'utilisateur existe et qu'il a un id valide dans la base de données
     const { data, error } = await supabase
       .from('users')
       .select('id')
@@ -28,10 +26,9 @@ app.use('/login/:id', async (req, res) => {
 
     const user = data[0];
 
-    // Generate a JWT token with the user ID as the payload
+    // Génération d'un token (json web token) avec comme payload l'id utilisateur
     const token = jwt.sign({ id: user.id }, secretKey);
 
-    // Send the token in the response
     res.json({ token });
   } catch (error) {
     console.error('Error while generating token:', error);
@@ -51,12 +48,10 @@ console.log('secret',secretKey);
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.get("/", (req, res) => {
-  res.send("Saline api - token generator");
+  res.send("Saline api - API de génération de token");
 });
 
-
-
-// Middleware to check for a valid JWT token in the Authorization header
+// Middleware - vérifier la validité du token dans le header 
 function authenticateToken(req, res, next) {
   const token = req.headers['authorization'];
 
@@ -69,55 +64,27 @@ function authenticateToken(req, res, next) {
       return res.status(403).json({ error: 'Invalid token' });
     }
 
-    // Attach the decoded user ID to the request object for use in other routes
     req.userId = decoded.id;
     next();
   });
 }
 
-// app.get('/api/token/:id', async (req, res) => {
-//   const { id } = req.params;
 
-//   try {
-//     // Query the user with the specified ID from the custom user table
-//     const { data, error } = await supabase
-//       .from('users')
-//       .select('id')
-//       .eq('id', id);
-
-//     if (error || !data || data.length === 0) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-
-//     const user = data[0];
-
-//     // Generate a JWT token with the user ID as the payload
-//     const token = jwt.sign({ id: user.id }, secretKey);
-
-//     // Send the token in the response
-//     res.json({ token });
-//   } catch (error) {
-//     console.error('Error while generating token:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// });
-
-// Endpoint to retrieve user data based on the valid JWT token
+// Endpoint : retrouver un utilisateur avec son token
 app.get('/api/user', authenticateToken, async (req, res) => {
   try {
-    // Query the user with the decoded user ID from the custom user table
+    
     const { data, error } = await supabase
       .from('users')
       .select('id, email, firstname, lastname')
       .eq('id', req.userId);
 
     if (error || !data || data.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Utilisateur introuvable' });
     }
 
     const user = data[0];
 
-    // Return user data
     res.json(user);
   } catch (error) {
     console.error('Error while fetching user data:', error);
