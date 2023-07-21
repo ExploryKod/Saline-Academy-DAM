@@ -61,9 +61,11 @@ function ProjectSummary() {
   const navigate = useNavigate();
 
   const steps = [
-    'En attente',
-    'En cours',
-    'Terminé',
+    'Programmation',
+    'Captation',
+    'Post-production',
+    'Editorial',
+    'Publication',
   ];
 
   const [openPriority, setPriorityOpen] = React.useState(false);

@@ -25,7 +25,7 @@ const Navbar = () => {
             <IconButton href='/homepage'>
                 <HomeIcon fontSize="large"/>
             </IconButton>
-            <IconButton href='/projet'>
+            <IconButton href='/project-detail-general'>
             <DateRangeIcon fontSize="large"/>
             </IconButton>
             <IconButton href='/planning'>
