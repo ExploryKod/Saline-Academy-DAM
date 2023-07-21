@@ -10,6 +10,10 @@
 	margin-bottom: 5px;
 }
 
+.project-card:hover {
+	background-color: #A6A8C9;
+}
+
 .project-card-logo {
 	padding: 20px;
 }
