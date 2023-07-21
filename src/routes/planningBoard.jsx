@@ -1,12 +1,30 @@
 import { useEffect, useState } from "react";
 import SupabaseService from "../tools/SupabaseClient";
-import { Box, Container, Fab, Grid, Typography } from "@mui/material";
+import { Container, Fab, Grid } from "@mui/material";
 import ProjectCard from "../component/ProjectCard";
 import Navbar from "../component/Navbar";
 import styles from "./planningBoard.module.scss";
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { EmailForm } from "../component/emailForm";
 import { capitalizeFirstLetter, formatDate, calculateDelayFromToday } from '../tools/stringTreatment';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  width: 400,
+  height: 400,
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  bgcolor: 'rgba(255, 255, 255)',
+  borderRadius: 2,
+  border: '2px solid #fff',
+  boxShadow: 24,
+  p: 4,
+};
+
 
 // Objet de base qui regroupe toutes les données pour le board
 const initialProjectPlanningData = {
@@ -29,8 +47,19 @@ const initialProjectPlanningData = {
 
 const PlanningBoard = () => {
     const sbs = new SupabaseService().client;
-  
+    const [open, setOpen] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false)
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);  
     const [projectPlanningData, setProjectPlanningData] = useState([]);
+
+    const handleOpenManagerModal = () => {
+      setModalOpen(true);
+    };
+  
+    const handleCloseManagerModal = () => {
+      setModalOpen(false);
+    };
 
     const handleProjectData = async () => {
       try {
@@ -73,9 +102,6 @@ const PlanningBoard = () => {
     return (
       <div className={styles.globalContainer}>
           <Navbar />
-
-         
-
           <div className={styles.firstContainer}>
               <h1>Vos projets en cours</h1>
 
@@ -85,53 +111,49 @@ const PlanningBoard = () => {
             </Fab>
   
               <Container sx={{display:'flex', gap:2 ,padding:2, backgroundColor:'white', borderRadius:2}} className="s-planning-board">
-                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'black', borderRight: 5, borderRadius:0}}>
+                  <div className="s-planning-cols" style={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'black', borderRight: 5, borderRadius:0}}>
                   <div className={`${styles.columnTitles} s-project-card-container`}>
                         <h2>Projets</h2>
                       </div>
                       {projectPlanningData
                           .filter((project) => project.title && project.status) 
                           .map((project, index) => (
-                            <Box
-                              key={index}
-                              sx={{
-                                padding: 0,
-                                width: 300,
-                                height: 120,
-                                backgroundColor: 'transparent',
-                                border: 'none',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'flex-start',
-                                alignItems: 'flex-start',
-                              }}
-                              className={`${styles.projectCard} s-project-card-container`}
-                            >
+                            <>
+                              <div key={project.id} onClick={handleOpen} className='planning-cols__card-wrapper planning-cols__project-card'>
                               <ProjectCard title={project.title} state={project.state ? project.state : ""} status={project.status}/>
-                            </Box>
+                            </div>
+                              <Modal
+                                className="s-modal-project"
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                              >
+                                <Box sx={style}>
+                                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    {project.title}
+                                  </Typography>
+                                  <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: 16, fontWeight: 'bold' }}>
+                                    Description du projet:
+                                    <Typography sx={{ mt: 2, fontSize: 16, fontWeight: 'normal' }}>
+                                    {project.description}
+                                    </Typography>
+                                  </Typography>
+                                </Box>
+                              </Modal>
+                            </>
+                          
                           ))}
 
                     
-                  </Container>
-                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  </div>
+                  <div className="s-planning-cols" style={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                   <div className={styles.columnPriority}>
                         <h2>Priorités</h2>
                       </div>
                       {projectPlanningData
                         .map((project, index) => (
-                      <Box
-                          key={index}
-                          sx={{
-                              padding: 2,
-                              width: 50,
-                              height: 120,
-                              backgroundColor: 'var(--light-blue, white)',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              justifyContent: 'center',
-                          }}
-                          className={`${styles.projectCard}`}
-                      >
+                     <div key={index} className="planning-cols__card-wrapper planning-cols__priority">
                         <Box sx={{
                                 padding: 0,
                                 margin: '0 auto',
@@ -149,85 +171,54 @@ const PlanningBoard = () => {
                         >
                             <p className="">{project.hasPriority ? 'A' : 'B'}</p>
                         </Box>
-                         
-                      </Box>
+                  </div>
                       ))}
-                  </Container>
-                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  </div>
+                  <div className="s-planning-cols" style={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                       <div className={styles.columnTitles}>
                         <h2>Echéances</h2>
                       </div>
                     
                       {projectPlanningData.map((project, index) => (
-                      <Box
-                    
-                      key={index}
-                          sx={{
-                              width: 100,
-                              height: 120,
-                              backgroundColor: 'var(--light-blue, white)',
-                              color:'black',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                          }}
-                          className={`${styles.projectCard}`}
-                      >
+                       <div key={index} className='planning-cols__card-wrapper  planning-cols__promised-date'>
                           <p className="">{project.promised_date}</p>
-                      </Box>
+                      </div>
                       ))}
-                  </Container>
-                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  </div>
+                  <div className="s-planning-cols" style={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                     <div className={styles.columnTitles}>
                         <h2>Délai restant</h2>
                     </div>
                   
                     {projectPlanningData.map((project, index) => (
-                      <Box
-                      key={index}
-                          sx={{
-                              width: 100,
-                              height: 120,
-                              backgroundColor: 'var(--light-blue, white)',
-                              color:'black',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                          }}
-                          className={`${styles.projectCard}`}
-                      >
+                      <div key={index} style={{height: '300px'}} className='planning-cols__card-wrapper  planning-cols__delay'>
                           <p className="">{project.delay} jours</p>
-                      </Box>
+                      </div>
+                      
                       ))}
-                  </Container>
-                  <Container className="s-planning-cols" sx={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
+                  </div>
+                  <div className="s-planning-cols" style={{display:'flex', flexDirection:'column', gap:4 ,padding:3, backgroundColor:'white', border: 0, borderColor:'green', borderRight: 5, borderRadius:0}}>
                   <div className={styles.columnTitles}>
                         <h2>Responsable projet</h2>
                     </div>
                       {projectPlanningData
                         .map((project, index) => (
-                      <Box
-                      key={index}
-                          sx={{
-                              padding: 2,
-                              width: 200,
-                              height: 120,
-                              backgroundColor: 'var(--light-blue, white)',
-                              border: '1px solid blue',
-                              borderRadius: 5,
-                              color:'black',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              justifyContent: 'center',
-                          }}
-                          className={`${styles.projectCard}`}
-                      >
-                          <p className="">{project.manager.firstname ? project.manager.firstname : "Aucune info"} {project.manager.lastname ? project.manager.lastname : "Aucune info"}</p>
-                          <p className="">{project.manager.email ? project.manager.email : "Aucun email fourni"}</p>
-                          <EmailForm manager={project.manager}/>
-                      </Box>
+                          <>
+                        <div key={index} className="planning-cols__card-wrapper  planning-cols__manager">
+                          <div onClick={handleOpenManagerModal} className="manager__card" style={{border: '2px solid blue', padding: '10px', borderRadius: '5px', cursor: 'pointer'}}>
+                            <p className="">{project.manager.firstname ? project.manager.firstname : "Aucune info"} {project.manager.lastname ? project.manager.lastname : "Aucune info"}</p>
+                            <p className="">{project.manager.email ? project.manager.email : "Aucun email fourni"}</p>
+                          </div>
+                        </div>
+                 
+                     {isModalOpen && <EmailForm  key={project.id} manager={project.manager} onClose={handleCloseManagerModal}/>}
+                
+                          </>
+                
+                      
+                    
                       ))}
-                  </Container>
+                  </div>
               </Container>
           </div>
       </div>

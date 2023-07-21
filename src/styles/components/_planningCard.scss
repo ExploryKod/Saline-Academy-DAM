@@ -1,5 +1,15 @@
 
-.s-project-card-container {
+.planning-cols__card-wrapper {
+    height: 200px!important;
+
+    &.planning-cols__project-card {
+        width: 320px;
+    }
+
+    &.planning-cols__promised-date {
+        width: 100px;
+    }
+
     .project-card {
         height: 100px;
         width: 100%;
@@ -50,8 +60,9 @@
             }
         }
     }
-    
- 
-    
- 
+}
+
+div.planning-cols__card-wrapper {
+    width: 100%;
+    height: 120px;
 }

@@ -1,21 +1,18 @@
 .email-modal-wrapper {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100vw;
     height: 100vh;
     position: fixed;
     z-index: 1999;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    
-    &.email-modal-wrapper-open {
-        display: flex;
-        justify-content: center;
-        align-items: center; 
-    }
+    background-color: $darkLavender;
 }
 
 .email-modal {
+    z-index: 2500;
     width: 500px;
     height: 500px;
     background-color: white;
@@ -28,12 +25,6 @@
     gap: 5px;
     align-items: center;
     position: relative;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-
-    &.email-modal-open {
-        opacity: 1;
-    }
 
     form.email-form {
         width: 100%;

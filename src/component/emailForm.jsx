@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-export const EmailForm = ({...props}) => {
+export const EmailForm = ({ manager, onClose}) => {
 
   const form = useRef();
 
@@ -20,10 +20,9 @@ export const EmailForm = ({...props}) => {
 
   
   return (
-    <div className={`email-modal-wrapper`}>
       <div className={`email-modal`}>
       <form className="email-form" ref={form} onSubmit={sendEmail}>
-      {/* <h2>Contacter {manager}</h2> */}
+      <h2>Contacter {manager.firstname} {manager.lastname}</h2>
       <div className="s-input-wrapper">
         <label htmlFor='objet'>Objet</label>
         <input id='objet' type="text" name="user_name" className="s-input-light" />
@@ -46,11 +45,12 @@ export const EmailForm = ({...props}) => {
       </div>
       <div className="s-input-wrapper">
       <button className="btn-1 s-input-submit-purple" type="submit">Envoyer</button>
+      <button  onClick={onClose} className="btn-1 s-input-submit-purple" type="button">Retour</button>
     </div>
       
     </form>
       </div>
-    </div>
+ 
    
   );
 };
