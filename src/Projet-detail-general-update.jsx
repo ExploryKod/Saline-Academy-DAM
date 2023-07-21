@@ -91,7 +91,7 @@ function ProjectDetailGeneralUpdate() {
   const handleSubmitForm = () => {
     sbs.updateProject(project.id, newTeacher, newDescription).then((res) => {
       setSaveOpen(false);
-      navigate("/project-detail-general");
+      navigate("/Project-detail-general");
     })
   }
 

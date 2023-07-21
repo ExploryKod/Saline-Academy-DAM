@@ -22,23 +22,20 @@ const Navbar = () => {
 
             <div className={styles.firstBlock}>
             <img src={salineLogo}/>
-            <IconButton href='/homepage'>
+            <IconButton href='/Homepage'>
                 <HomeIcon fontSize="large"/>
             </IconButton>
-            <IconButton href='/project-detail-general'>
+            <IconButton href='/Project-detail-general'>
             <DateRangeIcon fontSize="large"/>
             </IconButton>
-            <IconButton href='/planning'>
+            <IconButton href='/planningBoard'>
             <ManageHistoryRoundedIcon fontSize="large"/>
-            </IconButton>
-            <IconButton href='/param'>
-            <EngineeringIcon fontSize="large"/>
             </IconButton>
             <IconButton onClick={disconnectUser}>
                 <LogoutIcon fontSize="large"/>
             </IconButton>
             </div>
-            <Fab color="primary" aria-label="add"  href='/create' sx={{margin:0.6, marginBottom:2}}>
+            <Fab color="primary" aria-label="add"  href='/CreateProject' sx={{margin:0.6, marginBottom:2}}>
                 <AddIcon />
             </Fab>
         </AppBar>

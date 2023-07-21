@@ -141,7 +141,7 @@ const handleRegisterSubmit = async (e) => {
               password
             }, data[0].id);
             setToken(token);
-            navigate("/homepage");
+            navigate("/");
           } else {
             setFlashMessage('Mot de passe incorrect');
             

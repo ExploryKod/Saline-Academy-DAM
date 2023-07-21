@@ -25,7 +25,7 @@ const CreateProject = () => {
     const handleSubmit = async () =>  {
         const sbs = new SupabaseService();
         await sbs.createProject(projectData);
-        navigate('/homepage');
+        navigate('/Homepage');
     };
     const handleTitle =  (e) => {
         setProjectData({...projectData, title: e.target.value});

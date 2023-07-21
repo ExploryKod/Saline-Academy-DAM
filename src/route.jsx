@@ -18,14 +18,14 @@ const RoutesComponent = () => {
         <>
             {token ? (
             <Routes>
-                <Route path="/" element={<Navigate to="/homepage" replace />} />
-                <Route path="/homepage" element={<Homepage tokenId={token} />} />
-                <Route path="/create" element={<CreateProject />} />
-                <Route path="/project-detail-general" element={<ProjectDetailGeneral/>} />
-                <Route path="/project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />
-                <Route path="/projet-detail-add-rush" element={<AddRushPage/>}/>
+                <Route path="/" element={<Navigate to="/Homepage" replace />} />
+                <Route path="/Homepage" element={<Homepage tokenId={token} />} />
+                <Route path="/CreateProject" element={<CreateProject />} />
+                <Route path="/Project-detail-general" element={<ProjectDetailGeneral/>} />
+                <Route path="/Project-detail-general-update" element={<ProjectDetailGeneralUpdate/>} />
+                <Route path="/Projet-detail-add-rush" element={<AddRushPage/>}/>
                 <Route path='*' element={<NotFoundPage />} />
-                <Route path="/planning" element={<PlanningBoard />} />
+                <Route path="/planningBoard" element={<PlanningBoard />} />
             </Routes>):(
                 <Routes>
                     <Route path="/" element={<Navigate to="/connexion" replace />} />
