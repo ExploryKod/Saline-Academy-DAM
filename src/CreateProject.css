@@ -1,15 +1,49 @@
 .row {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .column {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .add {
     height:50px;
     width: auto;
     background-color: black;
+}
+
+.input {
+    color: #364496 !important;}
+
+.row td { 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-between;
+}
+
+body{
+    background-color: #F2F3F7;
+}
+
+.globalContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.firstContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 15vh;
 }
